@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <time.h>
+#include "time_records.h"
 #include "gboard.h"
 
 int menu(tile board[16][16]){
@@ -32,6 +29,8 @@ int menu(tile board[16][16]){
 
 int main(){
     tile board[16][16];
+    time_t t=247;
+    print_time(t);
     menu(board);
     
     return 0;
