@@ -121,14 +121,29 @@ bool click(tile board[16][16]){
 
 int main(){
     tile board[16][16];
-    board_init(board);
-    //print_game_state(board);
-    lost=false;
-    while(lost==false){
-        print_game_state(board);
-        lost=click(board);
+    while(true){
+        printf("Wybierz opcje: \n   1. Rozpocznij nowa gre\n    2. Zobacz najlepsze wyniki\n    3. Wyjdz\n");
+        int mode;
+        scanf("%d", &mode);
+        switch (mode)
+        {
+        case 1: 
+            board_init(board);
+            print_game_state(board);
+            lost=false;
+            while(lost==false){
+                print_game_state(board);
+                lost=click(board);
+            }
+            printf("Trafiles na bombe!\n\n\n");
+            break;
+        case 2:
+            //show_times();
+            break;
+        case 3: return 0;
+        }
         
     }
-    printf("Trafiles na bombe!\n");
+    
     return 0;
 }
