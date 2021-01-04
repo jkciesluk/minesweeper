@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
-
+int left;
 bool lost;
 typedef struct{
     bool clicked;
