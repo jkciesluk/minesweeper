@@ -32,8 +32,9 @@ int menu(tile board[16][16]){
             
             break;
         case 2:
-            //show_times();
             get_records();
+            print_records();
+            
             break;
         case 3: return 0;
         }
@@ -45,7 +46,7 @@ int menu(tile board[16][16]){
 int main(){
     tile board[16][16];
     time_t t=247;
-    print_time(t);
+    //print_time(t);
     menu(board);
     
 
