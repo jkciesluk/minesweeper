@@ -79,17 +79,19 @@ void print_game_state(tile board[16][16]){
     
 }
 
-void reveal(tile board[16][16], int i, int j){
-                left--;
-                if(j<15 && board[i][j+1].clicked==false) {board[i][j+1].clicked=true;                   if(board[i][j+1].state==0) reveal(board, i, j+1);}
-                if(i<15 && j<15  && board[i+1][j+1].clicked==false){ board[i+1][j+1].clicked=true;        if(board[i+1][j+1].state==0) reveal(board, i+1, j+1);}
-                if(i<15  && board[i+1][j].clicked==false){ board[i+1][j].clicked=true;                  if(board[i+1][j].state==0) reveal(board, i+1, j);}
-                if(i<15 && j>0  && board[i+1][j-1].clicked==false){ board[i+1][j-1].clicked=true;         if(board[i+1][j-1].state==0) reveal(board, i+1, j-1);}
-                if(j>0  && board[i][j-1].clicked==false){ board[i][j-1].clicked=true;                   if(board[i][j-1].state==0 ) reveal(board, i, j-1);}
-                if(i>0 && j>0  && board[i-1][j-1].clicked==false){ board[i-1][j-1].clicked=true;          if(board[i-1][j-1].state==0) reveal(board, i-1, j-1);}
-                if(i>0  && board[i-1][j].clicked==false){ board[i-1][j].clicked=true;                   if(board[i-1][j].state==0) reveal(board, i-1, j);}
-                if(i>0 && j<15  && board[i-1][j+1].clicked==false){ board[i-1][j+1].clicked=true;         if(board[i-1][j+1].state==0) reveal(board, i-1, j+1);}
+void reveal(tile board[16][16], int i, int j){                  //if tile ==0, reveal surrounding tiles recursively
+                
+                if(j<15 && board[i][j+1].clicked==false) {board[i][j+1].clicked=true;              left--;      if(board[i][j+1].state==0) reveal(board, i, j+1);}
+                if(i<15 && j<15  && board[i+1][j+1].clicked==false){ board[i+1][j+1].clicked=true; left--;      if(board[i+1][j+1].state==0) reveal(board, i+1, j+1);}
+                if(i<15  && board[i+1][j].clicked==false){ board[i+1][j].clicked=true;             left--;      if(board[i+1][j].state==0) reveal(board, i+1, j);}
+                if(i<15 && j>0  && board[i+1][j-1].clicked==false){ board[i+1][j-1].clicked=true;  left--;      if(board[i+1][j-1].state==0) reveal(board, i+1, j-1);}
+                if(j>0  && board[i][j-1].clicked==false){ board[i][j-1].clicked=true;              left--;      if(board[i][j-1].state==0 ) reveal(board, i, j-1);}
+                if(i>0 && j>0  && board[i-1][j-1].clicked==false){ board[i-1][j-1].clicked=true;   left--;      if(board[i-1][j-1].state==0) reveal(board, i-1, j-1);}
+                if(i>0  && board[i-1][j].clicked==false){ board[i-1][j].clicked=true;              left--;      if(board[i-1][j].state==0) reveal(board, i-1, j);}
+                if(i>0 && j<15  && board[i-1][j+1].clicked==false){ board[i-1][j+1].clicked=true;  left--;      if(board[i-1][j+1].state==0) reveal(board, i-1, j+1);}
 }
+
+
 
 bool click(tile board[16][16]){
     int i,j;
@@ -120,3 +122,85 @@ bool click(tile board[16][16]){
     return false;
 }
 
+
+
+//Here I go with hint/help part
+int amount_of_flags(tile board[16][16], int i, int j){
+    int aof=0;
+                if(j<15) if(board[i][j+1].flag) aof++;                 //dol
+                if(i<15 && j<15) if(board[i+1][j+1].flag) aof++;                //dol prawo
+                if(i<15) if(board[i+1][j].flag)  aof++;               //prawo
+                if(i<15 && j>0) if(board[i+1][j-1].flag) aof++;                //gora prawo
+                if(j>0) if(board[i][j-1].flag)  aof++;               //gora
+                if(i>0 && j>0) if(board[i-1][j-1].flag) aof++;                //gora lewo
+                if(i>0) if(board[i-1][j].flag) aof++;                //lewo
+                if(i>0 && j<15) if(board[i-1][j+1].flag) aof++;                //dol lewo
+    return aof;
+}
+
+int unrevealed_around(tile board[16][16], int i, int j){
+        int unr=0;
+                if(j<15) if(!board[i][j+1].clicked) unr++;                 //dol
+                if(i<15 && j<15) if(!board[i+1][j+1].clicked) unr++;                //dol prawo
+                if(i<15) if(!board[i+1][j].clicked)  unr++;               //prawo
+                if(i<15 && j>0) if(!board[i+1][j-1].clicked) unr++;                //gora prawo
+                if(j>0) if(!board[i][j-1].clicked)  unr++;               //gora
+                if(i>0 && j>0) if(!board[i-1][j-1].clicked) unr++;                //gora lewo
+                if(i>0) if(!board[i-1][j].clicked) unr++;                //lewo
+                if(i>0 && j<15) if(!board[i-1][j+1].clicked) unr++;                //dol lewo
+           return unr;
+}
+
+void hint_reveal(tile board[16][16], int i, int j){
+                left--;
+                if(j<15 && board[i][j+1].clicked==false && board[i][j+1].flag==false) {board[i][j+1].clicked=true;                 left--;      if(board[i][j+1].state==0) reveal(board, i, j+1);}
+                if(i<15 && j<15  && board[i+1][j+1].clicked==false && board[i+1][j+1].flag==false){ board[i+1][j+1].clicked=true;  left--;      if(board[i+1][j+1].state==0) reveal(board, i+1, j+1);}
+                if(i<15  && board[i+1][j].clicked==false && board[i+1][j].flag==false){ board[i+1][j].clicked=true;                left--;      if(board[i+1][j].state==0) reveal(board, i+1, j);}
+                if(i<15 && j>0  && board[i+1][j-1].clicked==false && board[i+1][j-1].flag==false){ board[i+1][j-1].clicked=true;   left--;      if(board[i+1][j-1].state==0) reveal(board, i+1, j-1);}
+                if(j>0  && board[i][j-1].clicked==false && board[i][j-1].flag==false){ board[i][j-1].clicked=true;                 left--;      if(board[i][j-1].state==0 ) reveal(board, i, j-1);}
+                if(i>0 && j>0  && board[i-1][j-1].clicked==false && board[i-1][j-1].flag==false){ board[i-1][j-1].clicked=true;    left--;      if(board[i-1][j-1].state==0) reveal(board, i-1, j-1);}
+                if(i>0  && board[i-1][j].clicked==false && board[i-1][j].flag==false){ board[i-1][j].clicked=true;                 left--;      if(board[i-1][j].state==0) reveal(board, i-1, j);}
+                if(i>0 && j<15  && board[i-1][j+1].clicked==false && board[i-1][j+1].flag==false){ board[i-1][j+1].clicked=true;   left--;      if(board[i-1][j+1].state==0) reveal(board, i-1, j+1);}
+}
+
+
+void hint_flag(tile board[16][16], int i, int j){
+        if(j<15) if(!board[i][j+1].clicked) {board[i][j+1].flag=true; board[i][j+1].clicked=true;}                 //dol
+        if(i<15 && j<15) if(!board[i+1][j+1].clicked) {board[i+1][j+1].flag=true; board[i+1][j+1].clicked=true;}                //dol prawo
+        if(i<15) if(!board[i+1][j].clicked)  {board[i+1][j].flag=true; board[i+1][j].clicked=true;}                //prawo
+        if(i<15 && j>0) if(!board[i+1][j-1].clicked) {board[i+1][j-1].flag=true; board[i+1][j-1].clicked=true;}                //gora prawo
+        if(j>0) if(!board[i][j-1].clicked)  {board[i][j-1].flag=true; board[i][j-1].clicked=true;}               //gora
+        if(i>0 && j>0) if(!board[i-1][j-1].clicked) {board[i-1][j-1].flag=true; board[i-1][j-1].clicked=true;}                //gora lewo
+        if(i>0) if(!board[i-1][j].clicked) {board[i-1][j].flag=true; board[i-1][j].clicked=true;}                //lewo
+        if(i>0 && j<15) if(!board[i-1][j+1].clicked) {board[i-1][j+1].flag=true; board[i-1][j+1].clicked=true;}                //dol lewo
+}
+
+int help(tile board[16][16]){
+    int aof=0; //amount of flags
+    int unr=0; //unrevealed tiles around
+    for(int i=0; i<16; i++){
+        for(int j=0; j<16; j++){
+            if(board[i][j].clicked==true && board[i][j].state>0 && board[i][j].flag==false){      //checking if amount of tiles with flags around is equal to amount of bombs
+                aof=amount_of_flags(board, i, j);
+                unr=unrevealed_around(board, i, j);
+                if(aof==board[i][j].state && unr>0){
+                        hint_reveal(board, i, j);
+                        return 1;
+                }
+                else if(aof>board[i][j].state){
+                    printf("O %d bomb sasiadujacych z %d %d za duzo!\n", aof-board[i][j].state, i, j);
+                    return 1;
+                }
+
+                else{                   //case if amount of flags < tile value
+                    if(unr==board[i][j].state-aof){
+                        hint_flag(board, i, j);
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    printf("Nie potrafie pomoc :( \n");
+    return 0;
+}
