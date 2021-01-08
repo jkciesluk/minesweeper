@@ -99,30 +99,38 @@ void reveal(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){                  /
 
 
 bool click(tile board[MAX_HEIGHT][MAX_WIDTH]){
-    int i,j;
-    scanf("%d %d", &i, &j);       //y poziom, x pion
-    while(board[i][j].clicked==true && board[i][j].flag==false){
-        printf("To pole juz jest odkryte, wybierz inne!\n");
-        scanf("%d %d", &i, &j);       //y poziom, x pion    
-    }
-    printf("\n1. Odkryj\n2. Postaw flage\n");
+    
+    
+    printf("\n1. Odkryj\n2. Postaw flage\n3. Skorzystaj z pomocy\n");
     int f;
     scanf("%d", &f);
-    switch (f)
-    {
-    case 1:
+
+    if(f<3){
+        int i,j;
+        scanf("%d %d", &i, &j);       //y poziom, x pion
+        while(board[i][j].clicked==true && board[i][j].flag==false){
+            printf("To pole juz jest odkryte, wybierz inne!\n");
+            scanf("%d %d", &i, &j);       //y poziom, x pion    
+        }
+        if(f==1){
         board[i][j].flag=false;
         board[i][j].clicked=true;
-        
+    
         if(board[i][j].state==-1) {printf("Bomba\n"); return true;} 
         left--;
         if(board[i][j].state==0) reveal(board, i, j);
-        break;
-    
-    case 2:
+        }
+        else if(f==2){
         if(board[i][j].flag==false){ board[i][j].flag=true; board[i][j].clicked=true;}
         else {board[i][j].flag=false; board[i][j].clicked=false;}
-        break;
+        }
+    }
+    else if(f==3){
+        help(board);
+    }
+    else{
+        while(help(board));
+        
     }
 
     return false;
@@ -158,15 +166,15 @@ int unrevealed_around(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){
 }
 
 void hint_reveal(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){
-                left--;
-                if(j<MAX_WIDTH-1 && board[i][j+1].clicked==false && board[i][j+1].flag==false) {board[i][j+1].clicked=true;                 left--;      if(board[i][j+1].state==0) reveal(board, i, j+1);}
-                if(i<MAX_HEIGHT-1 && j<MAX_WIDTH-1  && board[i+1][j+1].clicked==false && board[i+1][j+1].flag==false){ board[i+1][j+1].clicked=true;  left--;      if(board[i+1][j+1].state==0) reveal(board, i+1, j+1);}
-                if(i<MAX_HEIGHT-1  && board[i+1][j].clicked==false && board[i+1][j].flag==false){ board[i+1][j].clicked=true;                left--;      if(board[i+1][j].state==0) reveal(board, i+1, j);}
-                if(i<MAX_HEIGHT-1 && j>0  && board[i+1][j-1].clicked==false && board[i+1][j-1].flag==false){ board[i+1][j-1].clicked=true;   left--;      if(board[i+1][j-1].state==0) reveal(board, i+1, j-1);}
-                if(j>0  && board[i][j-1].clicked==false && board[i][j-1].flag==false){ board[i][j-1].clicked=true;                 left--;      if(board[i][j-1].state==0 ) reveal(board, i, j-1);}
-                if(i>0 && j>0  && board[i-1][j-1].clicked==false && board[i-1][j-1].flag==false){ board[i-1][j-1].clicked=true;    left--;      if(board[i-1][j-1].state==0) reveal(board, i-1, j-1);}
-                if(i>0  && board[i-1][j].clicked==false && board[i-1][j].flag==false){ board[i-1][j].clicked=true;                 left--;      if(board[i-1][j].state==0) reveal(board, i-1, j);}
-                if(i>0 && j<MAX_WIDTH-1  && board[i-1][j+1].clicked==false && board[i-1][j+1].flag==false){ board[i-1][j+1].clicked=true;   left--;      if(board[i-1][j+1].state==0) reveal(board, i-1, j+1);}
+                
+                if(j<MAX_WIDTH-1 && board[i][j+1].clicked==false && board[i][j+1].flag==false) {board[i][j+1].clicked=true;                 left--;             if(board[i][j+1].state==0) reveal(board, i, j+1);}
+                if(i<MAX_HEIGHT-1 && j<MAX_WIDTH-1  && board[i+1][j+1].clicked==false && board[i+1][j+1].flag==false){ board[i+1][j+1].clicked=true;  left--;   if(board[i+1][j+1].state==0) reveal(board, i+1, j+1);}
+                if(i<MAX_HEIGHT-1  && board[i+1][j].clicked==false && board[i+1][j].flag==false){ board[i+1][j].clicked=true;                left--;            if(board[i+1][j].state==0) reveal(board, i+1, j);}
+                if(i<MAX_HEIGHT-1 && j>0  && board[i+1][j-1].clicked==false && board[i+1][j-1].flag==false){ board[i+1][j-1].clicked=true;   left--;            if(board[i+1][j-1].state==0) reveal(board, i+1, j-1);}
+                if(j>0  && board[i][j-1].clicked==false && board[i][j-1].flag==false){ board[i][j-1].clicked=true;                 left--;                      if(board[i][j-1].state==0 ) reveal(board, i, j-1);}
+                if(i>0 && j>0  && board[i-1][j-1].clicked==false && board[i-1][j-1].flag==false){ board[i-1][j-1].clicked=true;    left--;                      if(board[i-1][j-1].state==0) reveal(board, i-1, j-1);}
+                if(i>0  && board[i-1][j].clicked==false && board[i-1][j].flag==false){ board[i-1][j].clicked=true;                 left--;                      if(board[i-1][j].state==0) reveal(board, i-1, j);}
+                if(i>0 && j<MAX_WIDTH-1  && board[i-1][j+1].clicked==false && board[i-1][j+1].flag==false){ board[i-1][j+1].clicked=true;   left--;             if(board[i-1][j+1].state==0) reveal(board, i-1, j+1);}
 }
 
 
@@ -191,6 +199,7 @@ int help(tile board[MAX_HEIGHT][MAX_WIDTH]){
                 unr=unrevealed_around(board, i, j);
                 if(aof==board[i][j].state && unr>0){
                         hint_reveal(board, i, j);
+                        printf("Bezpieczne wokol %d %d\n", i ,j);
                         return 1;
                 }
                 else if(aof>board[i][j].state){
@@ -199,8 +208,9 @@ int help(tile board[MAX_HEIGHT][MAX_WIDTH]){
                 }
 
                 else{                   //case if amount of flags < tile value
-                    if(unr==board[i][j].state-aof){
+                    if(unr==board[i][j].state-aof && unr>0){
                         hint_flag(board, i, j);
+                        printf("Flagi wokol %d %d\n", i ,j);
                         return 1;
                     }
                 }

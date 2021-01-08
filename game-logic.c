@@ -38,9 +38,12 @@ int menu(){
             board_init(board);
             lost=false;
             time_t start_time=get_time();
+            print_game_state(board);
+                
             while(lost==false && left>MAX_BOMBS){
-                print_game_state(board);
                 lost=click(board);
+                print_game_state(board);
+                
             }
             
             if (left<=MAX_BOMBS){
@@ -48,8 +51,10 @@ int menu(){
                 time_t time_score=game_time(start_time, end_time);
                 printf("Gratulacje, wygrales!.\nTwoj czas: ");
                 print_time(time_score);
-                if(compare_time(time_score>-1)){
-                new_records(time_score, compare_time(time_score));
+                get_records();
+                int rec_pos=compare_time(time_score);
+                if(rec_pos>-1){
+                new_records(time_score, rec_pos);
                 write_new_records();
                 }
             }
