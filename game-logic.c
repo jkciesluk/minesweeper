@@ -1,54 +1,76 @@
 #include "time_records.h"
 #include "gboard.h"
 
-int menu(tile board[16][16]){
+int choose_level(){
+    printf("Wybierz poziom trudnosci: \n1. Latwy\n2. Sredni \n3. Trudny\n");
+    int l;
+    scanf("%d", &l);
+    if(l==1){
+        MAX_HEIGHT=9;
+        MAX_WIDTH=9;
+        MAX_BOMBS=10;
+        return 1;
+    }
+    else if(l==3){
+        MAX_BOMBS=99;
+        MAX_HEIGHT=16;
+        MAX_WIDTH=30;
+        return 1;
+    }
+    else
+    {
+    
+        MAX_BOMBS=40;
+        MAX_HEIGHT=16;
+        MAX_WIDTH=16;
+        return 1;
+    }
+}
+
+int menu(){
     while(true){
         printf("Wybierz opcje: \n   1. Rozpocznij nowa gre\n   2. Zobacz najlepsze wyniki\n   3. Wyjdz\n");
         int mode;
         scanf("%d", &mode);
-        switch (mode)
-        {
-        case 1: 
+        if(mode==1){
+            choose_level();
+            tile board[MAX_HEIGHT][MAX_WIDTH];
             board_init(board);
             lost=false;
             time_t start_time=get_time();
-            while(lost==false && left>40){
+            while(lost==false && left>MAX_BOMBS){
                 print_game_state(board);
                 lost=click(board);
             }
             
-            if (left<=40){
+            if (left<=MAX_BOMBS){
                 time_t end_time=get_time();
                 time_t time_score=game_time(start_time, end_time);
                 printf("Gratulacje, wygrales!.\nTwoj czas: ");
                 print_time(time_score);
+                if(compare_time(time_score>-1)){
+                new_records(time_score, compare_time(time_score));
+                write_new_records();
+                }
             }
             
             else{
-            printf("Trafiles na bombe!\nPozostalo pol: %d\n\n\n", left-40);
-            
+            printf("Trafiles na bombe!\nPozostalo pol: %d\n\n\n", left-MAX_BOMBS);
             }
-            
-            
-            break;
-        case 2:
+        }
+        else if(mode==2){
             get_records();
             print_records();
-            
-            break;
-        case 3: return 0;
         }
-        
+
+        else return 0;
     }
 }
 
 
 int main(){
-    tile board[16][16];
-    time_t t=247;
-    //print_time(t);
-    menu(board);
     
+    menu();
 
     return 0;
 }
