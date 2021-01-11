@@ -23,41 +23,56 @@ int conv(const char *c, int l){         //converts string c of len l to int
 }
 
 int print_records(){
+    printf("Latwy: \n");
     for(int i=0; i<10; i++){
       if(i<9)printf("%d.  " , i+1);
       else printf("%d. " , i+1);
-      print_time(records[i]);
+      print_time(records[0][i]);
+    }
+    printf("Sredni: \n");
+    for(int i=0; i<10; i++){
+      if(i<9)printf("%d.  " , i+1);
+      else printf("%d. " , i+1);
+      print_time(records[1][i]);
+    }
+    printf("Trudny: \n");
+    for(int i=0; i<10; i++){
+      if(i<9)printf("%d.  " , i+1);
+      else printf("%d. " , i+1);
+      print_time(records[2][i]);
     }
     return 1;
 }
 
-int get_records(){
-    char c[10][7]={0};
+int get_records(){          //reads records from "records.txt"
+    char c[7]={0};
     FILE *plik;
     plik=fopen("records.txt", "r");
-    for(int i=0; i<10; i++){
-      fgets(c[i], 7, plik);
-      records[i]=(time_t) conv(c[i], strlen(c[i]));
+    for(int i=0; i<3; i++){
+        for(int j=0; j<10; j++){
+          fgets(c, 7, plik);
+          records[i][j]=(time_t) conv(c, strlen(c));
+        }
     }
     if(fclose(plik))printf("Blad zamykania pliku\n");
     return 1;
 }
 
-int compare_time(time_t score){
+int compare_time(time_t score, int lvl){
     for(int i=0; i<10; i++){
-        if(score<=records[i]) return i;
+        if(score<=records[lvl-1][i]) return i;
     }
     return -1;
 }
 
-int new_records(time_t score, int n){
+int new_records(time_t score, int n, int lvl){
     int i=n;
-    int tmp=records[i];
+    int tmp=records[lvl-1][i];
     int tmp2;
-    records[i]=score;
+    records[lvl-1][i]=score;
     while(i<9){
-        tmp2=records[i+1];
-        records[i+1]=tmp;
+        tmp2=records[lvl-1][i+1];
+        records[lvl-1][i+1]=tmp;
         i++;
         tmp=tmp2;
     }
@@ -67,8 +82,10 @@ int new_records(time_t score, int n){
 int write_new_records(){
     FILE *plik;
     plik=fopen("records.txt", "w");
-    for(int i=0; i<10; i++){
-        fprintf(plik, "%ld\n", records[i]);
+    for(int i=0; i<3; i++){
+        for(int j=0; j<10; j++){
+            fprintf(plik, "%ld\n", records[i][j]);
+        }
     }
     if(fclose(plik))printf("Blad zamykania pliku\n");
     return 1;    

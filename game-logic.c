@@ -15,7 +15,7 @@ int choose_level(){
         MAX_BOMBS=99;
         MAX_HEIGHT=16;
         MAX_WIDTH=30;
-        return 1;
+        return 3;
     }
     else
     {
@@ -23,7 +23,7 @@ int choose_level(){
         MAX_BOMBS=40;
         MAX_HEIGHT=16;
         MAX_WIDTH=16;
-        return 1;
+        return 2;
     }
 }
 
@@ -33,7 +33,7 @@ int menu(){
         int mode;
         scanf("%d", &mode);
         if(mode==1){
-            choose_level();
+            int lvl=choose_level();
             tile board[MAX_HEIGHT][MAX_WIDTH];
             board_init(board);
             lost=false;
@@ -52,9 +52,9 @@ int menu(){
                 printf("Gratulacje, wygrales!.\nTwoj czas: ");
                 print_time(time_score);
                 get_records();
-                int rec_pos=compare_time(time_score);
+                int rec_pos=compare_time(time_score, lvl);
                 if(rec_pos>-1){
-                new_records(time_score, rec_pos);
+                new_records(time_score, rec_pos, lvl);
                 write_new_records();
                 }
             }
