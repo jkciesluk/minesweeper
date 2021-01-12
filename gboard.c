@@ -98,7 +98,7 @@ void reveal(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){                  /
 
 bool action(tile board[MAX_HEIGHT][MAX_WIDTH]){
     
-    printf("\n1. Odkryj\n2. Postaw flage\n3. Skorzystaj z pomocy\n4. Rozwiazuj plansze\n");
+    printf("\n1. Odkryj\n2. Postaw flage\n3. Skorzystaj z pomocy\n4. Rozwiazuj plansze bez zgadywania\n5. Zgaduj i rozwiazuj\n");
     int f;
     scanf("%d", &f);
     if(f<3){
@@ -109,24 +109,33 @@ bool action(tile board[MAX_HEIGHT][MAX_WIDTH]){
             scanf("%d %d", &i, &j);       //y poziom, x pion    
         }
         system("clear");
-        if(f==1) return click(board, i, j);
+        if(f==1) return click(board, i, j);                                 //click
         
-        else if(f==2){
+        else if(f==2){                                                                       //put flag
             if(board[i][j].flag==false){ board[i][j].flag=true; board[i][j].clicked=true;}
             else {board[i][j].flag=false; board[i][j].clicked=false;}
             system("clear");
         }
         
     }
-    else if(f==3){
+    else if(f==3){                              //single hint
         system("clear");
         help(board);
     }
-    else{
+    else if(f==4){                                       //multiple hints
         system("clear");
         while(help(board));
     }
-    
+    else if(f==5){
+        while (lost==false && left>MAX_BOMBS)
+        {
+        while(help(board));
+        if(left>MAX_BOMBS)lost=guess_move(board);
+        }
+        
+        return lost;
+    }
+
     return false;
 }
 
@@ -221,6 +230,18 @@ int help(tile board[MAX_HEIGHT][MAX_WIDTH]){
             }
         }
     }
-    printf("Nie potrafie pomoc :( \n");
+    printf("Nie potrafie pomoc :( \nPozostalo %d pol\n", left);
+
     return 0;
+}
+
+bool guess_move(tile board[MAX_HEIGHT][MAX_WIDTH]){
+    int s=0, i=0, j=0;
+    while(board[i][j].clicked==true || board[i][j].flag==true){
+        if(s%2==0){ if(i<MAX_HEIGHT-1) i++; else if(j<MAX_WIDTH-1) j++;}
+        else { if(j<MAX_WIDTH-1) j++; else if(i<MAX_HEIGHT-1) i++;}
+        s++;
+    }
+    //printf("Zgaduje %d %d \n", i,j);
+    return click(board, i,j);
 }

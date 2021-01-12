@@ -29,3 +29,4 @@ int unrevealed_around(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j);
 void hint_reveal(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j);
 void hint_flag(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j);
 int help(tile board[MAX_HEIGHT][MAX_WIDTH]);
+bool guess_move(tile board[MAX_HEIGHT][MAX_WIDTH]);
