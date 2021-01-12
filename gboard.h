@@ -20,7 +20,8 @@ int board_init(tile board[MAX_HEIGHT][MAX_WIDTH]);
 void print_board(tile board[MAX_HEIGHT][MAX_WIDTH]);
 void print_game_state(tile board[MAX_HEIGHT][MAX_WIDTH]);
 void reveal(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j);
-bool click(tile board[MAX_HEIGHT][MAX_WIDTH]);
+bool action(tile board[MAX_HEIGHT][MAX_WIDTH]);
+bool click(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j);
 
 //help functions
 int amount_of_flags(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j);

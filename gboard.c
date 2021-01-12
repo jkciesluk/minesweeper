@@ -96,15 +96,11 @@ void reveal(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){                  /
                 if(i>0 && j<MAX_WIDTH-1  && board[i-1][j+1].clicked==false){ board[i-1][j+1].clicked=true;  left--;      if(board[i-1][j+1].state==0) reveal(board, i-1, j+1);}
 }
 
-
-
-bool click(tile board[MAX_HEIGHT][MAX_WIDTH]){
+bool action(tile board[MAX_HEIGHT][MAX_WIDTH]){
     
-    
-    printf("\n1. Odkryj\n2. Postaw flage\n3. Skorzystaj z pomocy\n");
+    printf("\n1. Odkryj\n2. Postaw flage\n3. Skorzystaj z pomocy\n4. Rozwiazuj plansze\n");
     int f;
     scanf("%d", &f);
-
     if(f<3){
         int i,j;
         scanf("%d %d", &i, &j);       //y poziom, x pion
@@ -112,26 +108,34 @@ bool click(tile board[MAX_HEIGHT][MAX_WIDTH]){
             printf("To pole juz jest odkryte, wybierz inne!\n");
             scanf("%d %d", &i, &j);       //y poziom, x pion    
         }
-        if(f==1){
-        board[i][j].flag=false;
-        board[i][j].clicked=true;
-    
-        if(board[i][j].state==-1) {printf("Bomba\n"); return true;} 
-        left--;
-        if(board[i][j].state==0) reveal(board, i, j);
-        }
+        system("clear");
+        if(f==1) return click(board, i, j);
+        
         else if(f==2){
-        if(board[i][j].flag==false){ board[i][j].flag=true; board[i][j].clicked=true;}
-        else {board[i][j].flag=false; board[i][j].clicked=false;}
+            if(board[i][j].flag==false){ board[i][j].flag=true; board[i][j].clicked=true;}
+            else {board[i][j].flag=false; board[i][j].clicked=false;}
+            system("clear");
         }
+        
     }
     else if(f==3){
+        system("clear");
         help(board);
     }
     else{
+        system("clear");
         while(help(board));
-        
     }
+    
+    return false;
+}
+
+bool click(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){
+        board[i][j].flag=false;
+        board[i][j].clicked=true;
+        if(board[i][j].state==-1) {printf("Bomba\n"); return true;} 
+        left--;
+        if(board[i][j].state==0) reveal(board, i, j);
 
     return false;
 }

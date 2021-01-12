@@ -34,16 +34,17 @@ int menu(){
         scanf("%d", &mode);
         if(mode==1){
             int lvl=choose_level();
-            tile board[MAX_HEIGHT][MAX_WIDTH];
+            
+            tile board[MAX_HEIGHT][MAX_WIDTH];          //setting up game
             board_init(board);
             lost=false;
             time_t start_time=get_time();
+            system("clear");
             print_game_state(board);
                 
-            while(lost==false && left>MAX_BOMBS){
-                lost=click(board);
+            while(lost==false && left>MAX_BOMBS){           //game is on
+                lost=action(board);
                 print_game_state(board);
-                
             }
             
             if (left<=MAX_BOMBS){
