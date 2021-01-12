@@ -5,7 +5,7 @@ Tematem projektu jest gra ,,Saper". Na prostokątnej planszy ukryta jest pewna i
 
 #### Instalacja
 
-gcc -o main game-logics.c gboard.c time_records.c 
+gcc -o main game-logic.c gboard.c time_records.c 
 
 #### Uruchamianie
 
