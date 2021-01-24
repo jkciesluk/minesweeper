@@ -52,6 +52,19 @@ int board_init(tile board[MAX_HEIGHT][MAX_WIDTH]){          //creates new game b
     return 1;
 }
 
+int reveal_bombs(tile board[MAX_HEIGHT][MAX_WIDTH]){
+    int k=0;
+    for(int i=0; i<MAX_HEIGHT; i++){
+        for(int j=0; j<MAX_WIDTH; j++){
+            if (board[i][j].state==-1 && board[i][j].flag==false){
+                board[i][j].clicked=true;
+                k++;
+            }
+        }
+    }
+    return k;
+}
+
 void reveal(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){                  //if tile ==0, reveal surrounding tiles recursively
                 
                 if(j<MAX_WIDTH-1 && board[i][j+1].clicked==false) {board[i][j+1].clicked=true;              left--;      if(board[i][j+1].state==0) reveal(board, i, j+1);}

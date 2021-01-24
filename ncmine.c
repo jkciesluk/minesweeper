@@ -96,11 +96,15 @@ int main(){
         default:
             break;
         }
-       print_ncurses_board(field, board);    
+        
+    print_ncurses_board(field, board);    
     refresh();
 
     }
+    reveal_bombs(board);
+    print_ncurses_board(field, board);    
     
+    refresh();
     getch();
 
     endwin();

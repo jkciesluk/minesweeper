@@ -18,13 +18,11 @@ typedef struct{
 int create_bombs(tile board[MAX_HEIGHT][MAX_WIDTH]);
 int bombs_around(tile board[MAX_HEIGHT][MAX_WIDTH]);
 int board_init(tile board[MAX_HEIGHT][MAX_WIDTH]);
-void print_board(tile board[MAX_HEIGHT][MAX_WIDTH]);
-void print_game_state(tile board[MAX_HEIGHT][MAX_WIDTH]);
 void reveal(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j);
 bool action(tile board[MAX_HEIGHT][MAX_WIDTH]);
 bool click(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j);
 int flag(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j);
-
+int reveal_bombs(tile board[MAX_HEIGHT][MAX_WIDTH]);
 //help functions
 int amount_of_flags(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j);
 int unrevealed_around(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j);
