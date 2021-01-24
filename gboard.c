@@ -102,52 +102,16 @@ int flag(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){
     return 1;        
 }
 
-bool action(tile board[MAX_HEIGHT][MAX_WIDTH]){
-    
-    printf("\n1. Odkryj\n2. Postaw flage\n3. Skorzystaj z pomocy\n4. Rozwiazuj plansze bez zgadywania\n5. Zgaduj i rozwiazuj\n");
-    int f;
-    scanf("%d", &f);
-    if(f<3){
-        int i,j;
-        scanf("%d %d", &i, &j);       //y poziom, x pion
-        while(board[i][j].clicked==true && board[i][j].flag==false){
-            printf("To pole juz jest odkryte, wybierz inne!\n");
-            scanf("%d %d", &i, &j);       //y poziom, x pion    
-        }
-        system("clear");
-        if(f==1) return click(board, i, j);                                 //click
-        
-        else if(f==2){                                                                       //put flag
-            flag(board, i, j);
-            system("clear");
-        }
-        
-    }
-    else if(f==3){                              //single hint
-        system("clear");
-        help(board);
-    }
-    else if(f==4){                                       //multiple hints
-        system("clear");
-        while(help(board));
-    }
-    else if(f==5){
-        while (lost==false && left>MAX_BOMBS)
-        {
-        while(help(board));
-        if(left>MAX_BOMBS)lost=guess_move(board);
-        }
-        
-        return lost;
-    }
-
-    return false;
-}
 
 bool click(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){
         board[i][j].flag=false;
         board[i][j].clicked=true;
-        if(board[i][j].state==-1) {printf("Bomba\n"); return true;} 
+        if(board[i][j].state==-1) {
+            //printf("Bomba\n"); 
+            lost=true;
+            return true;
+
+        } 
         left--;
         if(board[i][j].state==0) reveal(board, i, j);
 
@@ -217,36 +181,38 @@ int help(tile board[MAX_HEIGHT][MAX_WIDTH]){
                 unr=unrevealed_around(board, i, j);
                 if(aof==board[i][j].state && unr>0){
                         hint_reveal(board, i, j);
-                        printf("Bezpieczne wokol %d %d\n", i ,j);
+                        //printf("Bezpieczne wokol %d %d\n", i ,j);
                         return 1;
                 }
                 else if(aof>board[i][j].state){
-                    printf("O %d bomb sasiadujacych z %d %d za duzo!\n", aof-board[i][j].state, i, j);
+                    //printf("O %d bomb sasiadujacych z %d %d za duzo!\n", aof-board[i][j].state, i, j);
                     return 1;
                 }
 
                 else{                   //case if amount of flags < tile value
                     if(unr==board[i][j].state-aof && unr>0){
                         hint_flag(board, i, j);
-                        printf("Flagi wokol %d %d\n", i ,j);
+                        //printf("Flagi wokol %d %d\n", i ,j);
                         return 1;
                     }
                 }
             }
         }
     }
-    printf("Nie potrafie pomoc :( \nPozostalo %d pol\n", left);
+    //printf("Nie potrafie pomoc :( \nPozostalo %d pol\n", left);
 
     return 0;
 }
 
 bool guess_move(tile board[MAX_HEIGHT][MAX_WIDTH]){
     int s=0, i=0, j=0;
-    while(board[i][j].clicked==true || board[i][j].flag==true){
+    while((board[i][j].clicked==true || board[i][j].flag==true)){
         if(s%2==0){ if(i<MAX_HEIGHT-1) i++; else if(j<MAX_WIDTH-1) j++;}
         else { if(j<MAX_WIDTH-1) j++; else if(i<MAX_HEIGHT-1) i++;}
         s++;
+        if(s>MAX_HEIGHT+MAX_WIDTH) return false;
     }
     //printf("Zgaduje %d %d \n", i,j);
-    return click(board, i,j);
+    click(board, i,j);
+    return true;
 }

@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include <ncurses.h>
-
+bool try;
 int MAX_HEIGHT;
 int MAX_WIDTH;
 int MAX_BOMBS;

@@ -40,7 +40,7 @@ int main(){
     tile board[MAX_HEIGHT][MAX_WIDTH];
     board_init(board);
     WINDOW *field;     //displayed rooms
-    WINDOW *help;
+    
     for(int i=0; i<MAX_WIDTH; i++){
         mvprintw(4,7+2*i, "%d", i%10);
     }
@@ -74,7 +74,25 @@ int main(){
         case 'f':
             flag(board, y, x);
             break;
-
+        case '1':
+            help(board);
+            break;
+        case '2':
+            while(help(board));
+            break;
+        case '3':
+            try=true;
+            while (lost==false && left>MAX_BOMBS && try)
+            {
+                while(help(board));
+                if(left>MAX_BOMBS) try=guess_move(board);
+            }
+            break;
+        case 'r':
+            board_init(board);
+            lost=false;
+            left=MAX_WIDTH*MAX_HEIGHT-MAX_BOMBS;
+            break;
         default:
             break;
         }
@@ -84,6 +102,7 @@ int main(){
     }
     
     getch();
+
     endwin();
 
 
