@@ -48,7 +48,8 @@ void print_ncurses_board(WINDOW *win, tile board[MAX_HEIGHT][MAX_WIDTH]){
                 wattron(win, COLOR_PAIR(5));
                 mvwprintw(win, 1+i, 1+j*2, " %d ", board[i][j].state);
                 wattroff(win, COLOR_PAIR(5));
-                break;    
+                break;
+                
             default: 
                 mvwprintw(win, 1+i, 1+j*2, " %d ", board[i][j].state);
                 break;
@@ -61,23 +62,26 @@ void print_ncurses_board(WINDOW *win, tile board[MAX_HEIGHT][MAX_WIDTH]){
     wrefresh(win);
 }
 
-void print_ham(WINDOW *win){
-    wattron(win, COLOR_PAIR(1));
-    mvwprintw(win, 1, 1, "Pozostalo: %d", left);
-    wattroff(win, COLOR_PAIR(1));
+void print_bombs_left(WINDOW* win){
+    mvwprintw(win, 1, 2, "5/10");
     wrefresh(win);
 }
 
-void print_help(WINDOW *win){
-    wattron(win, COLOR_PAIR(1));
-    wprintw(win, "\nCollect 3 keys and find \npassage to the next level.\nUse WSAD to move.\nPress \"p\" to drink a potion.");
-    wattroff(win, COLOR_PAIR(1));
-    wrefresh(win);
-}
+
 void init_color_pairs(){
     init_pair(1, COLOR_GREEN, 0);
     init_pair(2, COLOR_RED, 0);
     init_pair(3, COLOR_YELLOW, 0);
     init_pair(4, COLOR_CYAN, 0);
     init_pair(5, COLOR_BLUE, 0);
+    init_pair(6, COLOR_MAGENTA, 0);
+}
+
+void print_rows_cols(){
+    for(int i=0; i<MAX_WIDTH; i++){
+        mvprintw(4,7+2*i, "%d", i%10);
+    }
+    for(int i=0; i<MAX_HEIGHT; i++){
+        mvprintw(6+i, 3, "%d", i%10);
+    }
 }

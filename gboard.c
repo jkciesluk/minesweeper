@@ -99,7 +99,12 @@ bool click(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){                //re
     return false;
 }
 
-
+void free_board(tile board[MAX_HEIGHT][MAX_WIDTH]){
+    for(int i=0; i<MAX_HEIGHT; i++){
+            free(board[i]);
+        
+    }
+}
 
 //Here I go with hint/help part
 int amount_of_flags(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){               //amount of flags around the tile

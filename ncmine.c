@@ -28,33 +28,16 @@ int choose_level(){
 }
 
 
-int main(){
-    x=0; y=0;
-    choose_level();    
-    initscr();
-    start_color();    
-    init_color_pairs();
-    curs_set(0);
-    noecho();
-    refresh();
-    tile board[MAX_HEIGHT][MAX_WIDTH];
-    board_init(board);
-    WINDOW *field;     //displayed rooms
-    
-    for(int i=0; i<MAX_WIDTH; i++){
-        mvprintw(4,7+2*i, "%d", i%10);
-    }
-    for(int i=0; i<MAX_HEIGHT; i++){
-        mvprintw(6+i, 3, "%d", i%10);
-    }
-    field=create_window(MAX_HEIGHT+2, MAX_WIDTH*2+3, 5, 5, TRUE);
-    move(6,6);
-    char c;
-    print_ncurses_board(field, board);
+int restart(tile board[MAX_HEIGHT][MAX_WIDTH], time_t start_time){
+            start_time=get_time();
+            board_init(board);
+            lost=false;
+            left=MAX_WIDTH*MAX_HEIGHT-MAX_BOMBS;
+            
+}
 
-    while(lost==false && left>MAX_BOMBS){
-        c=getch();
-        switch (c)
+bool action(tile board[MAX_HEIGHT][MAX_WIDTH], char c, time_t start_time){
+    switch (c)
         {
         case 'w':
             if(y>0)y--;
@@ -89,13 +72,44 @@ int main(){
             }
             break;
         case 'r':
-            board_init(board);
-            lost=false;
-            left=MAX_WIDTH*MAX_HEIGHT-MAX_BOMBS;
+            restart(board, start_time);
             break;
         default:
             break;
         }
+    return lost;
+}
+
+int sizex, sizey;
+int main(){
+    x=0; y=0;
+    char c;
+    choose_level();    
+    
+    initscr();
+    getmaxyx(stdscr,sizey,sizex);
+    start_color();    
+    init_color_pairs();
+    curs_set(0);
+    noecho();
+    refresh();
+    tile board[MAX_HEIGHT][MAX_WIDTH];
+    board_init(board);
+    WINDOW *field;     //displayed rooms
+    WINDOW *b_left;
+    //print_rows_cols();
+    sizex=sizex/2-MAX_WIDTH;
+    sizey=(sizey-MAX_HEIGHT)/2;
+    field=create_window(MAX_HEIGHT+2, MAX_WIDTH*2+3, sizey, sizex, TRUE);
+    move(sizey+1,sizex+1);
+    b_left=create_window(3, 8, sizey-3, sizex, TRUE);
+    
+    print_ncurses_board(field, board);
+    print_bombs_left(b_left);
+    time_t start_time=get_time();
+    while(lost==false && left>MAX_BOMBS){
+        c=getch();
+        action(board, c, start_time);
         
     print_ncurses_board(field, board);    
     refresh();
