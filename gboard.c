@@ -96,6 +96,12 @@ void reveal(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){                  /
                 if(i>0 && j<MAX_WIDTH-1  && board[i-1][j+1].clicked==false){ board[i-1][j+1].clicked=true;  left--;      if(board[i-1][j+1].state==0) reveal(board, i-1, j+1);}
 }
 
+int flag(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){
+    if(board[i][j].flag==false){ board[i][j].flag=true; board[i][j].clicked=true;}
+    else {board[i][j].flag=false; board[i][j].clicked=false;}
+    return 1;        
+}
+
 bool action(tile board[MAX_HEIGHT][MAX_WIDTH]){
     
     printf("\n1. Odkryj\n2. Postaw flage\n3. Skorzystaj z pomocy\n4. Rozwiazuj plansze bez zgadywania\n5. Zgaduj i rozwiazuj\n");
@@ -112,8 +118,7 @@ bool action(tile board[MAX_HEIGHT][MAX_WIDTH]){
         if(f==1) return click(board, i, j);                                 //click
         
         else if(f==2){                                                                       //put flag
-            if(board[i][j].flag==false){ board[i][j].flag=true; board[i][j].clicked=true;}
-            else {board[i][j].flag=false; board[i][j].clicked=false;}
+            flag(board, i, j);
             system("clear");
         }
         

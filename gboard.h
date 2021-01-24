@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
+#include <ncurses.h>
 
 int MAX_HEIGHT;
 int MAX_WIDTH;
 int MAX_BOMBS;
-
+int x,y;
 int left;
 bool lost;
 typedef struct{
@@ -22,6 +23,7 @@ void print_game_state(tile board[MAX_HEIGHT][MAX_WIDTH]);
 void reveal(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j);
 bool action(tile board[MAX_HEIGHT][MAX_WIDTH]);
 bool click(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j);
+int flag(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j);
 
 //help functions
 int amount_of_flags(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j);
@@ -30,3 +32,11 @@ void hint_reveal(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j);
 void hint_flag(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j);
 int help(tile board[MAX_HEIGHT][MAX_WIDTH]);
 bool guess_move(tile board[MAX_HEIGHT][MAX_WIDTH]);
+
+//ncurses ui
+
+WINDOW *create_window(int height, int width, int posy, int posx, bool border);
+void print_ncurses_board(WINDOW *win, tile board[MAX_HEIGHT][MAX_WIDTH]);
+void print_ham(WINDOW *win);
+void print_help(WINDOW *win);
+void init_color_pairs();
