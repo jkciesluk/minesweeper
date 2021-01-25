@@ -90,29 +90,52 @@ void print_rows_cols(){
 
 
 int choose_level(){
-    mvprintw(sizey/2-2, sizex/2-10,"Choose level:");
-    mvprintw(sizey/2-1, sizex/2-6,"1. Easy");
-    mvprintw(sizey/2, sizex/2-6,"2. Medium");
-    mvprintw(sizey/2+1, sizex/2-6,"3. Hard");
-    
-    
-    int l;
-    l=getch();
-    if(l=='1'){
+    getmaxyx(stdscr,sizey,sizex);
+    mvprintw(sizey/2+8, sizex/2-10, "Use W, S to navigate");
+    mvprintw(sizey/2+9, sizex/2-10, "Press ENTER to choose option");
+    mvprintw(sizey/2-3, sizex/2-8, "Choose level:");
+    char c=0;
+    int option=0;
+    while(c!=10 && c!=13){
+    if(option==0){
+        attron(COLOR_PAIR(7));
+        mvprintw(sizey/2-2, sizex/2-6, " Easy  ");
+        attroff(COLOR_PAIR(7));
+        mvprintw(sizey/2-1, sizex/2-6, " Medium ");
+        mvprintw(sizey/2, sizex/2-6, " Hard  ");
+    }
+    else if(option==1){
+        mvprintw(sizey/2-2, sizex/2-6, " Easy  ");
+        attron(COLOR_PAIR(7));
+        mvprintw(sizey/2-1, sizex/2-6, " Medium ");
+        attroff(COLOR_PAIR(7));
+        mvprintw(sizey/2, sizex/2-6, " Hard  ");
+    }
+    else if(option==2){
+        mvprintw(sizey/2-2, sizex/2-6, " Easy  ");
+        mvprintw(sizey/2-1, sizex/2-6, " Medium ");
+        attron(COLOR_PAIR(7));
+        mvprintw(sizey/2, sizex/2-6, " Hard  ");
+        attroff(COLOR_PAIR(7));
+    }
+    c=getch();
+    if(c=='w') {option--; if(option<0) option=2;}
+    else if(c=='s'){option++; if(option>2) option=0;}   
+    }
+    if(option==0){
         MAX_HEIGHT=9;
         MAX_WIDTH=9;
         MAX_BOMBS=10;
         return 1;
     }
-    else if(l=='3'){
+    else if(option==2){
         MAX_BOMBS=99;
         MAX_HEIGHT=16;
         MAX_WIDTH=30;
         return 3;
     }
     else
-    {
-    
+    {   
         MAX_BOMBS=40;
         MAX_HEIGHT=16;
         MAX_WIDTH=16;
