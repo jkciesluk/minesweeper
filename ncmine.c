@@ -26,25 +26,36 @@ int main(){
         mvprintw(sizey/2-2, sizex/2-6, " New game  ");
         attroff(COLOR_PAIR(7));
         mvprintw(sizey/2-1, sizex/2-6, " Records   ");
-        mvprintw(sizey/2, sizex/2-6, " Exit game ");
+        mvprintw(sizey/2, sizex/2-6, " Settings  ");
+        mvprintw(sizey/2+1, sizex/2-6, " Exit game ");
     }
     else if(option==1){
         mvprintw(sizey/2-2, sizex/2-6, " New game  ");
         attron(COLOR_PAIR(7));
         mvprintw(sizey/2-1, sizex/2-6, " Records   ");
         attroff(COLOR_PAIR(7));
-        mvprintw(sizey/2, sizex/2-6, " Exit game ");
+        mvprintw(sizey/2, sizex/2-6, " Settings  ");
+        mvprintw(sizey/2+1, sizex/2-6, " Exit game ");
     }
     else if(option==2){
         mvprintw(sizey/2-2, sizex/2-6, " New game  ");
         mvprintw(sizey/2-1, sizex/2-6, " Records   ");
         attron(COLOR_PAIR(7));
-        mvprintw(sizey/2, sizex/2-6, " Exit game ");
+        mvprintw(sizey/2, sizex/2-6, " Settings  ");
+        attroff(COLOR_PAIR(7));
+        mvprintw(sizey/2+1, sizex/2-6, " Exit game ");
+    }
+    else if(option==3){
+        mvprintw(sizey/2-2, sizex/2-6, " New game  ");
+        mvprintw(sizey/2-1, sizex/2-6, " Records   ");
+        mvprintw(sizey/2, sizex/2-6, " Settings  ");
+        attron(COLOR_PAIR(7));
+        mvprintw(sizey/2+1, sizex/2-6, " Exit game ");
         attroff(COLOR_PAIR(7));
     }
     c=getch();
     if(c=='w') {option--; if(option<0) option=2;}
-    else if(c=='s'){option++; if(option>2) option=0;}   
+    else if(c=='s'){option++; if(option>3) option=0;}   
     }
     if (option==0)
     {
@@ -96,18 +107,21 @@ int main(){
     {
         //print_ncurses_records();
     }
-    else
-    {   
+    else if(option==2){
+        c=0;
+        option=0;
+        clear();
+        how_to_play();
+        refresh();
+        getch();
+        clear();
+    }
+    else{   
         endwin();
         return 0;
     }
     
     }   
-    refresh();
-    getch();
-
-    endwin();
-
 
     return 0;
 }

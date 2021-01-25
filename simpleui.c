@@ -142,3 +142,9 @@ int choose_level(){
         return 2;
     }
 }
+
+void how_to_play(){
+    getmaxyx(stdscr,sizey,sizex);
+    mvprintw(sizey/2, sizex/2-6, "Tutaj beda informacje o grze");
+    refresh();
+}

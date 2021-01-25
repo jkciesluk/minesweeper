@@ -49,3 +49,4 @@ void print_bombs_left(WINDOW* win);
 bool action(tile** board, char c, time_t start_time);
 int restart(tile** board, time_t start_time);
 int choose_level();
+void how_to_play();
