@@ -84,10 +84,10 @@ int main(){
         field=create_window(MAX_HEIGHT+2, MAX_WIDTH*2+3, sizey, sizex, TRUE);
         move(sizey+1,sizex+1);
         b_left=create_window(3, 9, sizey-3, sizex, TRUE);
-    
+        x=0; y=0;
         print_ncurses_board(field, board);
         print_bombs_left(b_left);
-    
+        
         while(lost==false && left>MAX_BOMBS){
             c=getch();
             action(board, c, start_time);

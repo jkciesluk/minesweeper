@@ -49,7 +49,27 @@ void print_ncurses_board(WINDOW *win, tile** board){
                 mvwprintw(win, 1+i, 1+j*2, " %d ", board[i][j].state);
                 wattroff(win, COLOR_PAIR(5));
                 break;
-                
+            case 5:
+                wattron(win, COLOR_PAIR(6));
+                mvwprintw(win, 1+i, 1+j*2, " %d ", board[i][j].state);
+                wattroff(win, COLOR_PAIR(6));
+                break;
+            case 6:
+                wattron(win, COLOR_PAIR(6));
+                mvwprintw(win, 1+i, 1+j*2, " %d ", board[i][j].state);
+                wattroff(win, COLOR_PAIR(6));
+                break;
+            case 7:
+                wattron(win, COLOR_PAIR(6));
+                mvwprintw(win, 1+i, 1+j*2, " %d ", board[i][j].state);
+                wattroff(win, COLOR_PAIR(6));
+                break;
+            case 8:
+                wattron(win, COLOR_PAIR(6));
+                mvwprintw(win, 1+i, 1+j*2, " %d ", board[i][j].state);
+                wattroff(win, COLOR_PAIR(6));
+                break;
+                 
             default: 
                 mvwprintw(win, 1+i, 1+j*2, " %d ", board[i][j].state);
                 break;
@@ -163,6 +183,7 @@ void how_to_play(){
     mvprintw(sizey/2+1, sizex/2-10, "1     - single hint");
     mvprintw(sizey/2+2, sizex/2-10, "2     - solve without guessing");
     mvprintw(sizey/2+3, sizex/2-10, "3     - solve with guessing");
+    mvprintw(sizey/2+4, sizex/2-10, "R     - restart board");
     
     mvprintw(sizey/2+8, sizex/2-9, "Press any key");
     

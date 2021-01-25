@@ -78,8 +78,8 @@ void reveal(tile** board, int i, int j){                  //if tile ==0, reveal 
 }
 
 int flag(tile** board, int i, int j){                              //flag selected tile
-    if(board[i][j].flag==false){ board[i][j].flag=true; bombs_left--; board[i][j].clicked=true;}
-    else {board[i][j].flag=false; bombs_left++; board[i][j].clicked=false;}
+    if(board[i][j].flag==false && board[i][j].clicked==false){ board[i][j].flag=true; bombs_left--; board[i][j].clicked=true;}
+    else if(board[i][j].flag==true){board[i][j].flag=false; if(bombs_left<MAX_BOMBS) bombs_left++; board[i][j].clicked=false;}
     return 1;        
 }
 
