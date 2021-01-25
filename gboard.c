@@ -204,7 +204,7 @@ bool guess_move(tile** board){
 
 
 
-int restart(tile** board, time_t start_time){
+int restart(tile** board){
             start_time=get_time();
             board_init(board);
             lost=false;
@@ -247,7 +247,7 @@ bool action(tile** board, char c, time_t start_time){
             }
             break;
         case 'r':
-            restart(board, start_time);
+            restart(board);
             break;
         default:
             break;

@@ -12,7 +12,7 @@ int main(){
     curs_set(0);
     noecho();
     refresh();
-    time_t start_time;
+    
     int option=0;
     char c=0;
     while (1)
@@ -60,8 +60,8 @@ int main(){
     if (option==0)
     {
         clear();
-        
-        choose_level();
+            
+        int lvl=choose_level();
         clear();
         tile** board=(tile **)malloc(MAX_HEIGHT* sizeof(tile*));
         for(int i=0; i<MAX_HEIGHT; i++){
@@ -69,8 +69,7 @@ int main(){
         }
         WINDOW *field;     //displayed rooms
         WINDOW *b_left;
-    
-        restart(board, start_time);
+        restart(board);
         //print_rows_cols();
         refresh();
         getmaxyx(stdscr,sizey,sizex);
@@ -92,6 +91,21 @@ int main(){
         }
         reveal_bombs(board);
         print_ncurses_board(field, board);    
+        if(left<=MAX_BOMBS){
+            time_t end_time=get_time();
+            time_t time_score=game_time(start_time, end_time);
+            mvprintw(sizey-2, sizex+10, "You won! Your time: %02ld:%02ld:%02ld", time_score/3600, time_score%3600/60, time_score%60);
+            get_records();
+            if(compare_time(time_score, lvl)>-1){
+                write_new_records();
+            }
+        }
+        else
+        {
+            mvprintw(sizey-2, sizex+10, "You lost! Bombs left: %02d", bombs_left); 
+        }
+        
+        
         refresh();
         getch();
         clear();

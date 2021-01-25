@@ -4,7 +4,7 @@
 #include <string.h>
 
 time_t records[3][10];
-
+time_t start_time;
 time_t get_time();
 time_t game_time(time_t t1, time_t t2);
 

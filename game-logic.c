@@ -38,7 +38,7 @@ int menu(){
             tile board[MAX_HEIGHT][MAX_WIDTH];          //setting up game
             board_init(board);
             lost=false;
-            time_t start_time=get_time();
+            start_time=get_time();
             system("clear");
             print_game_state(board);
                 
