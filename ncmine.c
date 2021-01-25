@@ -97,6 +97,7 @@ int main(){
             mvprintw(sizey-2, sizex+10, "You won! Your time: %02ld:%02ld:%02ld", time_score/3600, time_score%3600/60, time_score%60);
             get_records();
             if(compare_time(time_score, lvl)>-1){
+                new_records(time_score,compare_time(time_score, lvl) ,lvl);
                 write_new_records();
             }
         }
