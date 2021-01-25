@@ -1,5 +1,5 @@
 #include "gboard.h"
-
+#include "time_records.h"
 int create_bombs(tile** board){            //randomly generates bombs on board
     srand(time(NULL));
     int row, column;
@@ -197,4 +197,84 @@ bool guess_move(tile** board){
     }
     click(board, i,j);
     return true;
+}
+
+//menu functions
+
+int choose_level(){
+    printf("Wybierz poziom trudnosci: \n1. Latwy\n2. Sredni \n3. Trudny\n");
+    int l;
+    scanf("%d", &l);
+    if(l==1){
+        MAX_HEIGHT=9;
+        MAX_WIDTH=9;
+        MAX_BOMBS=10;
+        return 1;
+    }
+    else if(l==3){
+        MAX_BOMBS=99;
+        MAX_HEIGHT=16;
+        MAX_WIDTH=30;
+        return 3;
+    }
+    else
+    {
+    
+        MAX_BOMBS=40;
+        MAX_HEIGHT=16;
+        MAX_WIDTH=16;
+        return 2;
+    }
+}
+
+
+int restart(tile** board, time_t start_time){
+            start_time=get_time();
+            board_init(board);
+            lost=false;
+            bombs_left=MAX_BOMBS;    
+}
+
+bool action(tile** board, char c, time_t start_time){
+    switch (c)
+        {
+        case 'w':
+            if(y>0)y--;
+            break;
+        case 's':
+            if(y<MAX_HEIGHT-1)y++;
+            break;
+        case 'a':
+            if(x>0)x--;
+            break;
+        case 'd':
+            if(x<MAX_WIDTH-1)x++;
+            break;
+        case ' ':
+            click(board, y, x);
+            break;
+        case 'f':
+            flag(board, y, x);
+            break;
+        case '1':
+            help(board);
+            break;
+        case '2':
+            while(help(board));
+            break;
+        case '3':
+            try=true;
+            while (lost==false && left>MAX_BOMBS && try)
+            {
+                while(help(board));
+                if(left>MAX_BOMBS) try=guess_move(board);
+            }
+            break;
+        case 'r':
+            restart(board, start_time);
+            break;
+        default:
+            break;
+        }
+    return lost;
 }

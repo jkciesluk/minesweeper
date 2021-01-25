@@ -44,3 +44,8 @@ void print_help(WINDOW *win);
 void init_color_pairs();
 void print_rows_cols();
 void print_bombs_left(WINDOW* win);
+
+//menu 
+bool action(tile** board, char c, time_t start_time);
+int restart(tile** board, time_t start_time);
+int choose_level();
