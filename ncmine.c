@@ -18,6 +18,12 @@ int main(){
     while (1)
     {
     getmaxyx(stdscr,sizey,sizex);
+    attron(COLOR_PAIR(1));
+    attron(A_BOLD);
+    mvprintw(2, sizex/2-12, "M I N E S W E E P E R");
+    attroff(COLOR_PAIR(1));
+    attroff(A_BOLD);
+    
     mvprintw(sizey/2+8, sizex/2-10, "Use W, S to navigate");
     mvprintw(sizey/2+9, sizex/2-10, "Press ENTER to choose option");
     while(c!=10 && c!=13){

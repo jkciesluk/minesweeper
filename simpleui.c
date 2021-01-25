@@ -91,6 +91,12 @@ void print_rows_cols(){
 
 int choose_level(){
     getmaxyx(stdscr,sizey,sizex);
+    attron(COLOR_PAIR(1));
+    attron(A_BOLD);
+    mvprintw(2, sizex/2-12, "M I N E S W E E P E R");
+    attroff(COLOR_PAIR(1));
+    attroff(A_BOLD);
+    
     mvprintw(sizey/2+8, sizex/2-10, "Use W, S to navigate");
     mvprintw(sizey/2+9, sizex/2-10, "Press ENTER to choose option");
     mvprintw(sizey/2-3, sizex/2-8, "Choose level:");
@@ -145,7 +151,21 @@ int choose_level(){
 
 void how_to_play(){
     getmaxyx(stdscr,sizey,sizex);
-    mvprintw(sizey/2, sizex/2-6, "Tutaj beda informacje o grze");
+    attron(COLOR_PAIR(1));
+    attron(A_BOLD);
+    mvprintw(2, sizex/2-12, "M I N E S W E E P E R");
+    attroff(COLOR_PAIR(1));
+    attroff(A_BOLD);
+    mvprintw(sizey/2-4, sizex/2-7, "How to play:");
+    mvprintw(sizey/2-2, sizex/2-10, "WSAD  - move");
+    mvprintw(sizey/2-1, sizex/2-10, "SPACE - reveal tile");
+    mvprintw(sizey/2, sizex/2-10, "F     - put flag");
+    mvprintw(sizey/2+1, sizex/2-10, "1     - single hint");
+    mvprintw(sizey/2+2, sizex/2-10, "2     - solve without guessing");
+    mvprintw(sizey/2+3, sizex/2-10, "3     - solve with guessing");
+    
+    mvprintw(sizey/2+8, sizex/2-9, "Press any key");
+    
     refresh();
 }
 
@@ -167,6 +187,12 @@ void print_ncurses_records(){
     WINDOW *table;
     getmaxyx(stdscr,sizey,sizex);
     refresh();
+    attron(COLOR_PAIR(1));
+    attron(A_BOLD);
+    mvprintw(2, sizex/2-12, "M I N E S W E E P E R");
+    attroff(COLOR_PAIR(1));
+    attroff(A_BOLD);
+    
     table=create_window(13, 14, sizey/2-7, sizex/2-7-14-5, TRUE);
     print_level_records(table, 0);
     table=create_window(13, 14, sizey/2-7, sizex/2-7, TRUE);
