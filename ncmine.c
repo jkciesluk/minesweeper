@@ -6,30 +6,30 @@ int sizex, sizey;
 int main(){
     x=0; y=0;
     char c;
-    choose_level();    
     
     initscr();                      //setting up ncurses
-    getmaxyx(stdscr,sizey,sizex);
     start_color();    
     init_color_pairs();
     curs_set(0);
     noecho();
     refresh();
-    WINDOW *field;     //displayed rooms
-    WINDOW *b_left;
+    time_t start_time;
+    while (1)
+    {    
+    choose_level();    
     
-    char** array = malloc(10*sizeof(char*));
-    for (int i=0; i<10; i++) {
-    array[i] = malloc(i);
-}
+    clear();
     tile** board=(tile **)malloc(MAX_HEIGHT* sizeof(tile*));
     for(int i=0; i<MAX_HEIGHT; i++){
         board[i]=(tile *)malloc(MAX_WIDTH *sizeof(tile));
     }
-    time_t start_time;
+    WINDOW *field;     //displayed rooms
+    WINDOW *b_left;
+    
     restart(board, start_time);
     //print_rows_cols();
-
+    refresh();
+    getmaxyx(stdscr,sizey,sizex);
     sizex=sizex/2-MAX_WIDTH;                        //printing game
     sizey=(sizey-MAX_HEIGHT)/2;
     field=create_window(MAX_HEIGHT+2, MAX_WIDTH*2+3, sizey, sizex, TRUE);
@@ -48,9 +48,18 @@ int main(){
 
     }
     reveal_bombs(board);
-    
     print_ncurses_board(field, board);    
-    
+    refresh();
+    getch();
+    clear();
+    for(int i=0; i<MAX_HEIGHT; i++){
+        free(board[i]);
+    }
+    free(board);
+    delwin(field);
+    delwin(b_left);
+    refresh();
+    }   
     refresh();
     getch();
 

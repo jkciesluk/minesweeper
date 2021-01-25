@@ -86,3 +86,29 @@ void print_rows_cols(){
         mvprintw(6+i, 3, "%d", i%10);
     }
 }
+
+int choose_level(){
+    printf("Wybierz poziom trudnosci: \n1. Latwy\n2. Sredni \n3. Trudny\n");
+    int l;
+    l=getch();
+    if(l=='1'){
+        MAX_HEIGHT=9;
+        MAX_WIDTH=9;
+        MAX_BOMBS=10;
+        return 1;
+    }
+    else if(l=='3'){
+        MAX_BOMBS=99;
+        MAX_HEIGHT=16;
+        MAX_WIDTH=30;
+        return 3;
+    }
+    else
+    {
+    
+        MAX_BOMBS=40;
+        MAX_HEIGHT=16;
+        MAX_WIDTH=16;
+        return 2;
+    }
+}
