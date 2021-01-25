@@ -11,7 +11,7 @@ WINDOW *create_window(int height, int width, int posy, int posx, bool border){
     return tmp;
 }
 
-void print_ncurses_board(WINDOW *win, tile board[MAX_HEIGHT][MAX_WIDTH]){
+void print_ncurses_board(WINDOW *win, tile** board){
     for (int i = 0; i < MAX_HEIGHT; i++)
     {
         for(int j=0; j<MAX_WIDTH; j++){
@@ -63,7 +63,8 @@ void print_ncurses_board(WINDOW *win, tile board[MAX_HEIGHT][MAX_WIDTH]){
 }
 
 void print_bombs_left(WINDOW* win){
-    mvwprintw(win, 1, 2, "5/10");
+    if(bombs_left!=MAX_BOMBS)mvwprintw(win, 1, 1, "%2.d/%2.d", MAX_BOMBS-bombs_left, MAX_BOMBS);
+    else{mvwprintw(win, 1, 1, " 0/%2.d", MAX_BOMBS);}
     wrefresh(win);
 }
 

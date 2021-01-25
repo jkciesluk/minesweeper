@@ -1,6 +1,6 @@
 #include "gboard.h"
 
-int create_bombs(tile board[MAX_HEIGHT][MAX_WIDTH]){            //randomly generates bombs on board
+int create_bombs(tile** board){            //randomly generates bombs on board
     srand(time(NULL));
     int row, column;
     for(int i=0; i<MAX_BOMBS; i++){
@@ -17,7 +17,7 @@ int create_bombs(tile board[MAX_HEIGHT][MAX_WIDTH]){            //randomly gener
     return 1;
 }
 
-int bombs_around(tile board[MAX_HEIGHT][MAX_WIDTH]){                //give each tile value equal to amount of surrounding bombs
+int bombs_around(tile** board){                //give each tile value equal to amount of surrounding bombs
     
     for(int i=0; i<MAX_HEIGHT; i++){
         for(int j=0; j<MAX_WIDTH; j++){
@@ -37,7 +37,7 @@ int bombs_around(tile board[MAX_HEIGHT][MAX_WIDTH]){                //give each 
     return 1;
 }
 
-int board_init(tile board[MAX_HEIGHT][MAX_WIDTH]){          //creates new game board
+int board_init(tile** board){          //creates new game board
     left=MAX_HEIGHT*MAX_WIDTH;
     for(int i=0; i<MAX_HEIGHT; i++){
         for(int j=0; j<MAX_WIDTH; j++){
@@ -52,7 +52,7 @@ int board_init(tile board[MAX_HEIGHT][MAX_WIDTH]){          //creates new game b
     return 1;
 }
 
-int reveal_bombs(tile board[MAX_HEIGHT][MAX_WIDTH]){
+int reveal_bombs(tile** board){
     int k=0;
     for(int i=0; i<MAX_HEIGHT; i++){
         for(int j=0; j<MAX_WIDTH; j++){
@@ -65,7 +65,7 @@ int reveal_bombs(tile board[MAX_HEIGHT][MAX_WIDTH]){
     return k;
 }
 
-void reveal(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){                  //if tile ==0, reveal surrounding tiles recursively
+void reveal(tile** board, int i, int j){                  //if tile ==0, reveal surrounding tiles recursively
                 
                 if(j<MAX_WIDTH-1 && board[i][j+1].clicked==false) {board[i][j+1].clicked=true;              left--;      if(board[i][j+1].state==0) reveal(board, i, j+1);}
                 if(i<MAX_HEIGHT-1 && j<MAX_WIDTH-1  && board[i+1][j+1].clicked==false){ board[i+1][j+1].clicked=true; left--;      if(board[i+1][j+1].state==0) reveal(board, i+1, j+1);}
@@ -77,14 +77,14 @@ void reveal(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){                  /
                 if(i>0 && j<MAX_WIDTH-1  && board[i-1][j+1].clicked==false){ board[i-1][j+1].clicked=true;  left--;      if(board[i-1][j+1].state==0) reveal(board, i-1, j+1);}
 }
 
-int flag(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){                              //flag selected tile
-    if(board[i][j].flag==false){ board[i][j].flag=true; board[i][j].clicked=true;}
-    else {board[i][j].flag=false; board[i][j].clicked=false;}
+int flag(tile** board, int i, int j){                              //flag selected tile
+    if(board[i][j].flag==false){ board[i][j].flag=true; bombs_left--; board[i][j].clicked=true;}
+    else {board[i][j].flag=false; bombs_left++; board[i][j].clicked=false;}
     return 1;        
 }
 
 
-bool click(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){                //reveal selected tile
+bool click(tile** board, int i, int j){                //reveal selected tile
         board[i][j].flag=false;
         board[i][j].clicked=true;
         if(board[i][j].state==-1) {
@@ -99,7 +99,7 @@ bool click(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){                //re
     return false;
 }
 
-void free_board(tile board[MAX_HEIGHT][MAX_WIDTH]){
+void free_board(tile** board){
     for(int i=0; i<MAX_HEIGHT; i++){
             free(board[i]);
         
@@ -107,7 +107,7 @@ void free_board(tile board[MAX_HEIGHT][MAX_WIDTH]){
 }
 
 //Here I go with hint/help part
-int amount_of_flags(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){               //amount of flags around the tile
+int amount_of_flags(tile** board, int i, int j){               //amount of flags around the tile
     int aof=0;
                 if(j<MAX_WIDTH-1) if(board[i][j+1].flag) aof++;                 //dol
                 if(i<MAX_HEIGHT-1 && j<MAX_WIDTH-1) if(board[i+1][j+1].flag) aof++;                //dol prawo
@@ -120,7 +120,7 @@ int amount_of_flags(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){           
     return aof;
 }
 
-int unrevealed_around(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){             //amount of unrevealed tiles around
+int unrevealed_around(tile** board, int i, int j){             //amount of unrevealed tiles around
         int unr=0;
                 if(j<MAX_WIDTH-1) if(!board[i][j+1].clicked) unr++;                 //dol
                 if(i<MAX_HEIGHT-1 && j<MAX_WIDTH-1) if(!board[i+1][j+1].clicked) unr++;                //dol prawo
@@ -133,7 +133,7 @@ int unrevealed_around(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){         
            return unr;
 }
 
-void hint_reveal(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){          //reveal() for help function
+void hint_reveal(tile** board, int i, int j){          //reveal() for help function
                 
                 if(j<MAX_WIDTH-1 && board[i][j+1].clicked==false && board[i][j+1].flag==false) {board[i][j+1].clicked=true;                 left--;             if(board[i][j+1].state==0) reveal(board, i, j+1);}
                 if(i<MAX_HEIGHT-1 && j<MAX_WIDTH-1  && board[i+1][j+1].clicked==false && board[i+1][j+1].flag==false){ board[i+1][j+1].clicked=true;  left--;   if(board[i+1][j+1].state==0) reveal(board, i+1, j+1);}
@@ -146,19 +146,19 @@ void hint_reveal(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){          //re
 }
 
 
-void hint_flag(tile board[MAX_HEIGHT][MAX_WIDTH], int i, int j){            //flag() for help function
+void hint_flag(tile** board, int i, int j){            //flag() for help function
 
-        if(j<MAX_WIDTH-1) if(!board[i][j+1].clicked) {board[i][j+1].flag=true; board[i][j+1].clicked=true;}                 //dol
-        if(i<MAX_HEIGHT-1 && j<MAX_WIDTH-1) if(!board[i+1][j+1].clicked) {board[i+1][j+1].flag=true; board[i+1][j+1].clicked=true;}                //dol prawo
-        if(i<MAX_HEIGHT-1) if(!board[i+1][j].clicked)  {board[i+1][j].flag=true; board[i+1][j].clicked=true;}                //prawo
-        if(i<MAX_HEIGHT-1 && j>0) if(!board[i+1][j-1].clicked) {board[i+1][j-1].flag=true; board[i+1][j-1].clicked=true;}                //gora prawo
-        if(j>0) if(!board[i][j-1].clicked)  {board[i][j-1].flag=true; board[i][j-1].clicked=true;}               //gora
-        if(i>0 && j>0) if(!board[i-1][j-1].clicked) {board[i-1][j-1].flag=true; board[i-1][j-1].clicked=true;}                //gora lewo
-        if(i>0) if(!board[i-1][j].clicked) {board[i-1][j].flag=true; board[i-1][j].clicked=true;}                //lewo
-        if(i>0 && j<MAX_WIDTH-1) if(!board[i-1][j+1].clicked) {board[i-1][j+1].flag=true; board[i-1][j+1].clicked=true;}                //dol lewo
+        if(j<MAX_WIDTH-1) if(!board[i][j+1].clicked) {board[i][j+1].flag=true; bombs_left--; board[i][j+1].clicked=true;}                 //dol
+        if(i<MAX_HEIGHT-1 && j<MAX_WIDTH-1) if(!board[i+1][j+1].clicked) {board[i+1][j+1].flag=true; bombs_left--; board[i+1][j+1].clicked=true;}                //dol prawo
+        if(i<MAX_HEIGHT-1) if(!board[i+1][j].clicked)  {board[i+1][j].flag=true; bombs_left--; board[i+1][j].clicked=true;}                //prawo
+        if(i<MAX_HEIGHT-1 && j>0) if(!board[i+1][j-1].clicked) {board[i+1][j-1].flag=true; bombs_left--; board[i+1][j-1].clicked=true;}                //gora prawo
+        if(j>0) if(!board[i][j-1].clicked)  {board[i][j-1].flag=true; bombs_left--; board[i][j-1].clicked=true;}               //gora
+        if(i>0 && j>0) if(!board[i-1][j-1].clicked) {board[i-1][j-1].flag=true; bombs_left--; board[i-1][j-1].clicked=true;}                //gora lewo
+        if(i>0) if(!board[i-1][j].clicked) {board[i-1][j].flag=true; bombs_left--; board[i-1][j].clicked=true;}                //lewo
+        if(i>0 && j<MAX_WIDTH-1) if(!board[i-1][j+1].clicked) {board[i-1][j+1].flag=true; bombs_left--; board[i-1][j+1].clicked=true;}                //dol lewo
 }
 
-int help(tile board[MAX_HEIGHT][MAX_WIDTH]){                    //helps by revealing safe tiles or putting flags on bombs
+int help(tile** board){                    //helps by revealing safe tiles or putting flags on bombs
     int aof=0; //amount of flags
     int unr=0; //unrevealed tiles around
     for(int i=0; i<MAX_HEIGHT; i++){
@@ -187,7 +187,7 @@ int help(tile board[MAX_HEIGHT][MAX_WIDTH]){                    //helps by revea
     return 0;
 }
 
-bool guess_move(tile board[MAX_HEIGHT][MAX_WIDTH]){
+bool guess_move(tile** board){
     int s=0, i=0, j=0;
     while((board[i][j].clicked==true || board[i][j].flag==true)){
         if(s%2==0){ if(i<MAX_HEIGHT-1) i++; else if(j<MAX_WIDTH-1) j++;}

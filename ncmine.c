@@ -28,15 +28,14 @@ int choose_level(){
 }
 
 
-int restart(tile board[MAX_HEIGHT][MAX_WIDTH], time_t start_time){
+int restart(tile** board, time_t start_time){
             start_time=get_time();
             board_init(board);
             lost=false;
-            left=MAX_WIDTH*MAX_HEIGHT-MAX_BOMBS;
-            
+            bombs_left=MAX_BOMBS;    
 }
 
-bool action(tile board[MAX_HEIGHT][MAX_WIDTH], char c, time_t start_time){
+bool action(tile** board, char c, time_t start_time){
     switch (c)
         {
         case 'w':
@@ -86,19 +85,29 @@ int main(){
     char c;
     choose_level();    
     
-    initscr();
+    initscr();                      //setting up ncurses
     getmaxyx(stdscr,sizey,sizex);
     start_color();    
     init_color_pairs();
     curs_set(0);
     noecho();
     refresh();
-    tile board[MAX_HEIGHT][MAX_WIDTH];
-    board_init(board);
     WINDOW *field;     //displayed rooms
     WINDOW *b_left;
+    
+    char** array = malloc(10*sizeof(char*));
+    for (int i=0; i<10; i++) {
+    array[i] = malloc(i);
+}
+    tile** board=(tile **)malloc(MAX_HEIGHT* sizeof(tile*));
+    for(int i=0; i<MAX_HEIGHT; i++){
+        board[i]=(tile *)malloc(MAX_WIDTH *sizeof(tile));
+    }
+    time_t start_time;
+    restart(board, start_time);
     //print_rows_cols();
-    sizex=sizex/2-MAX_WIDTH;
+
+    sizex=sizex/2-MAX_WIDTH;                        //printing game
     sizey=(sizey-MAX_HEIGHT)/2;
     field=create_window(MAX_HEIGHT+2, MAX_WIDTH*2+3, sizey, sizex, TRUE);
     move(sizey+1,sizex+1);
@@ -106,16 +115,17 @@ int main(){
     
     print_ncurses_board(field, board);
     print_bombs_left(b_left);
-    time_t start_time=get_time();
+    
     while(lost==false && left>MAX_BOMBS){
         c=getch();
         action(board, c, start_time);
-        
+    print_bombs_left(b_left);       
     print_ncurses_board(field, board);    
     refresh();
 
     }
     reveal_bombs(board);
+    
     print_ncurses_board(field, board);    
     
     refresh();
