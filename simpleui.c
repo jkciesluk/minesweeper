@@ -76,6 +76,7 @@ void init_color_pairs(){
     init_pair(4, COLOR_CYAN, 0);
     init_pair(5, COLOR_BLUE, 0);
     init_pair(6, COLOR_MAGENTA, 0);
+    init_pair(7, COLOR_BLACK, COLOR_WHITE);
 }
 
 void print_rows_cols(){
@@ -87,8 +88,14 @@ void print_rows_cols(){
     }
 }
 
+
 int choose_level(){
-    printf("Wybierz poziom trudnosci: \n1. Latwy\n2. Sredni \n3. Trudny\n");
+    mvprintw(sizey/2-2, sizex/2-10,"Choose level:");
+    mvprintw(sizey/2-1, sizex/2-6,"1. Easy");
+    mvprintw(sizey/2, sizex/2-6,"2. Medium");
+    mvprintw(sizey/2+1, sizex/2-6,"3. Hard");
+    
+    
     int l;
     l=getch();
     if(l=='1'){
