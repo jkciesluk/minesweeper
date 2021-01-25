@@ -78,7 +78,7 @@ int main(){
         sizey=(sizey-MAX_HEIGHT)/2;
         field=create_window(MAX_HEIGHT+2, MAX_WIDTH*2+3, sizey, sizex, TRUE);
         move(sizey+1,sizex+1);
-        b_left=create_window(3, 8, sizey-3, sizex, TRUE);
+        b_left=create_window(3, 9, sizey-3, sizex, TRUE);
     
         print_ncurses_board(field, board);
         print_bombs_left(b_left);
@@ -105,7 +105,10 @@ int main(){
         }
     else if(option==1)
     {
-        //print_ncurses_records();
+        c=0;
+        option=0;
+        get_records();
+        print_ncurses_records();
     }
     else if(option==2){
         c=0;

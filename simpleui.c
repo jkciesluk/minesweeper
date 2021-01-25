@@ -1,5 +1,5 @@
 #include "gboard.h"
-
+#include "time_records.h"
 
 WINDOW *create_window(int height, int width, int posy, int posx, bool border){
     WINDOW *tmp;
@@ -63,8 +63,8 @@ void print_ncurses_board(WINDOW *win, tile** board){
 }
 
 void print_bombs_left(WINDOW* win){
-    if(bombs_left!=MAX_BOMBS)mvwprintw(win, 1, 1, "%2.d/%2.d", MAX_BOMBS-bombs_left, MAX_BOMBS);
-    else{mvwprintw(win, 1, 1, " 0/%2.d", MAX_BOMBS);}
+    if(bombs_left!=MAX_BOMBS)mvwprintw(win, 1, 1, " %02d/%02d ", MAX_BOMBS-bombs_left, MAX_BOMBS);
+    else{mvwprintw(win, 1, 1, " 00/%02d ", MAX_BOMBS);}
     wrefresh(win);
 }
 
@@ -146,5 +146,39 @@ int choose_level(){
 void how_to_play(){
     getmaxyx(stdscr,sizey,sizex);
     mvprintw(sizey/2, sizex/2-6, "Tutaj beda informacje o grze");
+    refresh();
+}
+
+void print_level_records(WINDOW* win, int lvl){
+    if(lvl==0)mvwprintw(win, 1, 4, "EASY");
+    else if(lvl==1) mvwprintw(win, 1, 4, "MEDIUM");
+    else mvwprintw(win, 1, 4, "HARD");
+    for(int i=0; i<9; i++){
+        mvwprintw(win, 2+i, 1, "%d. %02ld:%02ld:%02ld", i+1,records[lvl][i]/3600, records[lvl][i]%3600/60, records[lvl][i]%60);
+    }
+    mvwprintw(win, 11, 1, "10.%02ld:%02ld:%02ld",records[lvl][9]/3600, records[lvl][9]%3600/60, records[lvl][9]%60);
+    
+    wrefresh(win);
+
+}
+
+void print_ncurses_records(){
+    clear();
+    WINDOW *table;
+    getmaxyx(stdscr,sizey,sizex);
+    refresh();
+    table=create_window(13, 14, sizey/2-7, sizex/2-7-14-5, TRUE);
+    print_level_records(table, 0);
+    table=create_window(13, 14, sizey/2-7, sizex/2-7, TRUE);
+    print_level_records(table, 1);
+    table=create_window(13, 14, sizey/2-7, sizex/2+7+5, TRUE);
+    print_level_records(table, 2);
+    
+    mvprintw(sizey/2+8, sizex/2-9, "Press any key");
+    refresh();
+    
+    getch();
+    clear();
+    delwin(table);
     refresh();
 }

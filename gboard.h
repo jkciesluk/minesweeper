@@ -50,3 +50,5 @@ bool action(tile** board, char c, time_t start_time);
 int restart(tile** board, time_t start_time);
 int choose_level();
 void how_to_play();
+void print_level_records(WINDOW* win, int lvl);
+void print_ncurses_records();

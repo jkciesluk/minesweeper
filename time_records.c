@@ -8,9 +8,6 @@ time_t game_time(time_t t1, time_t t2){
     return t2-t1;
 }
 
-void print_time(time_t t){
-    printf("%.2ld:%.2ld:%.2ld\n",t/3600, t%3600/60, t%60);
-}
 
 int conv(const char *c, int l){         //converts string c of len l to int
     int res=0;
@@ -22,27 +19,6 @@ int conv(const char *c, int l){         //converts string c of len l to int
     return res;
 }
 
-int print_records(){
-    printf("Latwy: \n");
-    for(int i=0; i<10; i++){
-      if(i<9)printf("%d.  " , i+1);
-      else printf("%d. " , i+1);
-      print_time(records[0][i]);
-    }
-    printf("Sredni: \n");
-    for(int i=0; i<10; i++){
-      if(i<9)printf("%d.  " , i+1);
-      else printf("%d. " , i+1);
-      print_time(records[1][i]);
-    }
-    printf("Trudny: \n");
-    for(int i=0; i<10; i++){
-      if(i<9)printf("%d.  " , i+1);
-      else printf("%d. " , i+1);
-      print_time(records[2][i]);
-    }
-    return 1;
-}
 
 int get_records(){          //reads records from "records.txt"
     char c[7]={0};
