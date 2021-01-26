@@ -43,7 +43,6 @@ void print_ncurses_board(WINDOW *win, tile** board);
 void print_ham(WINDOW *win);
 void print_help(WINDOW *win);
 void init_color_pairs();
-void print_rows_cols();
 void print_bombs_left(WINDOW* win);
 
 //menu 

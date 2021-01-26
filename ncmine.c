@@ -21,11 +21,12 @@ int main(){
     attron(COLOR_PAIR(1));
     attron(A_BOLD);
     mvprintw(2, sizex/2-12, "M I N E S W E E P E R");
-    attroff(COLOR_PAIR(1));
+    attroff(COLOR_PAIR(1));                                                 //main menu
     attroff(A_BOLD);
     
     mvprintw(sizey/2+8, sizex/2-10, "Use W, S to navigate");
     mvprintw(sizey/2+9, sizex/2-10, "Press ENTER to choose option");
+
     while(c!=10 && c!=13){
         print_menu(option);
         c=getch();
@@ -36,7 +37,7 @@ int main(){
     {
         clear();
             
-        int lvl=choose_level();
+        int lvl=choose_level();                                         //creating game board
         clear();
         tile** board=(tile **)malloc(MAX_HEIGHT* sizeof(tile*));
         for(int i=0; i<MAX_HEIGHT; i++){
@@ -45,7 +46,7 @@ int main(){
         WINDOW *field;     //displayed rooms
         WINDOW *b_left;
         restart(board);
-        //print_rows_cols();
+        
         refresh();
         getmaxyx(stdscr,sizey,sizex);
         sizex=sizex/2-MAX_WIDTH;                        //printing game
@@ -57,8 +58,8 @@ int main(){
         print_ncurses_board(field, board);
         print_bombs_left(b_left);
         
-        while(lost==false && left>MAX_BOMBS){
-            c=getch();
+        while(lost==false && left>MAX_BOMBS){           //actual game
+            c=getch();                                  
             action(board, c, start_time);
             print_bombs_left(b_left);       
             print_ncurses_board(field, board);    
@@ -66,7 +67,7 @@ int main(){
         }
         reveal_bombs(board);
         print_ncurses_board(field, board);    
-        if(left<=MAX_BOMBS){
+        if(left<=MAX_BOMBS){                                    //if won, compare score
             time_t end_time=get_time();
             time_t time_score=game_time(start_time, end_time);
             mvprintw(sizey-2, sizex+10, "You won! Your time: %02ld:%02ld:%02ld", time_score/3600, time_score%3600/60, time_score%60);
@@ -76,7 +77,7 @@ int main(){
                 write_new_records();
             }
         }
-        else
+        else            //if lost
         {
             mvprintw(sizey-2, sizex+10, "You lost! Bombs left: %02d", bombs_left); 
         }
@@ -85,10 +86,7 @@ int main(){
         refresh();
         getch();
         clear();
-        for(int i=0; i<MAX_HEIGHT; i++){
-            free(board[i]);
-        }
-        free(board);
+        free_board(board);
         delwin(field);
         delwin(b_left);
         refresh();

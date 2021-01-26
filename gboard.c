@@ -102,8 +102,8 @@ bool click(tile** board, int i, int j){                //reveal selected tile
 void free_board(tile** board){
     for(int i=0; i<MAX_HEIGHT; i++){
             free(board[i]);
-        
     }
+    free(board);
 }
 
 //Here I go with hint/help part

@@ -99,15 +99,6 @@ void init_color_pairs(){
     init_pair(7, COLOR_BLACK, COLOR_WHITE);
 }
 
-void print_rows_cols(){
-    for(int i=0; i<MAX_WIDTH; i++){
-        mvprintw(4,7+2*i, "%d", i%10);
-    }
-    for(int i=0; i<MAX_HEIGHT; i++){
-        mvprintw(6+i, 3, "%d", i%10);
-    }
-}
-
 
 int choose_level(){
     getmaxyx(stdscr,sizey,sizex);
