@@ -205,7 +205,7 @@ void print_level_records(WINDOW* win, int lvl){
 
 void print_ncurses_records(){
     clear();
-    WINDOW *table;
+    WINDOW *table[3];
     getmaxyx(stdscr,sizey,sizex);
     refresh();
     attron(COLOR_PAIR(1));
@@ -214,18 +214,55 @@ void print_ncurses_records(){
     attroff(COLOR_PAIR(1));
     attroff(A_BOLD);
     
-    table=create_window(13, 14, sizey/2-7, sizex/2-7-14-5, TRUE);
-    print_level_records(table, 0);
-    table=create_window(13, 14, sizey/2-7, sizex/2-7, TRUE);
-    print_level_records(table, 1);
-    table=create_window(13, 14, sizey/2-7, sizex/2+7+5, TRUE);
-    print_level_records(table, 2);
+    table[0]=create_window(13, 14, sizey/2-7, sizex/2-7-14-5, TRUE);
+    print_level_records(table[0], 0);
+    table[1]=create_window(13, 14, sizey/2-7, sizex/2-7, TRUE);
+    print_level_records(table[1], 1);
+    table[2]=create_window(13, 14, sizey/2-7, sizex/2+7+5, TRUE);
+    print_level_records(table[2], 2);
     
     mvprintw(sizey/2+8, sizex/2-9, "Press any key");
     refresh();
     
     getch();
     clear();
-    delwin(table);
+    delwin(table[0]);
+    delwin(table[1]);
+    delwin(table[2]);
     refresh();
+}
+
+void print_menu(int option){
+    if(option==0){
+        attron(COLOR_PAIR(7));
+        mvprintw(sizey/2-2, sizex/2-6, " New game  ");
+        attroff(COLOR_PAIR(7));
+        mvprintw(sizey/2-1, sizex/2-6, " Records   ");
+        mvprintw(sizey/2, sizex/2-6, " Settings  ");
+        mvprintw(sizey/2+1, sizex/2-6, " Exit game ");
+    }
+    else if(option==1){
+        mvprintw(sizey/2-2, sizex/2-6, " New game  ");
+        attron(COLOR_PAIR(7));
+        mvprintw(sizey/2-1, sizex/2-6, " Records   ");
+        attroff(COLOR_PAIR(7));
+        mvprintw(sizey/2, sizex/2-6, " Settings  ");
+        mvprintw(sizey/2+1, sizex/2-6, " Exit game ");
+    }
+    else if(option==2){
+        mvprintw(sizey/2-2, sizex/2-6, " New game  ");
+        mvprintw(sizey/2-1, sizex/2-6, " Records   ");
+        attron(COLOR_PAIR(7));
+        mvprintw(sizey/2, sizex/2-6, " Settings  ");
+        attroff(COLOR_PAIR(7));
+        mvprintw(sizey/2+1, sizex/2-6, " Exit game ");
+    }
+    else if(option==3){
+        mvprintw(sizey/2-2, sizex/2-6, " New game  ");
+        mvprintw(sizey/2-1, sizex/2-6, " Records   ");
+        mvprintw(sizey/2, sizex/2-6, " Settings  ");
+        attron(COLOR_PAIR(7));
+        mvprintw(sizey/2+1, sizex/2-6, " Exit game ");
+        attroff(COLOR_PAIR(7));
+    }
 }

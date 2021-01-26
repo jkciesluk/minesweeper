@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include <ncurses.h>
+
 bool try;
 int MAX_HEIGHT;
 int MAX_WIDTH;
@@ -52,3 +53,4 @@ int choose_level();
 void how_to_play();
 void print_level_records(WINDOW* win, int lvl);
 void print_ncurses_records();
+void print_menu(int option);

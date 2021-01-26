@@ -27,41 +27,10 @@ int main(){
     mvprintw(sizey/2+8, sizex/2-10, "Use W, S to navigate");
     mvprintw(sizey/2+9, sizex/2-10, "Press ENTER to choose option");
     while(c!=10 && c!=13){
-    if(option==0){
-        attron(COLOR_PAIR(7));
-        mvprintw(sizey/2-2, sizex/2-6, " New game  ");
-        attroff(COLOR_PAIR(7));
-        mvprintw(sizey/2-1, sizex/2-6, " Records   ");
-        mvprintw(sizey/2, sizex/2-6, " Settings  ");
-        mvprintw(sizey/2+1, sizex/2-6, " Exit game ");
-    }
-    else if(option==1){
-        mvprintw(sizey/2-2, sizex/2-6, " New game  ");
-        attron(COLOR_PAIR(7));
-        mvprintw(sizey/2-1, sizex/2-6, " Records   ");
-        attroff(COLOR_PAIR(7));
-        mvprintw(sizey/2, sizex/2-6, " Settings  ");
-        mvprintw(sizey/2+1, sizex/2-6, " Exit game ");
-    }
-    else if(option==2){
-        mvprintw(sizey/2-2, sizex/2-6, " New game  ");
-        mvprintw(sizey/2-1, sizex/2-6, " Records   ");
-        attron(COLOR_PAIR(7));
-        mvprintw(sizey/2, sizex/2-6, " Settings  ");
-        attroff(COLOR_PAIR(7));
-        mvprintw(sizey/2+1, sizex/2-6, " Exit game ");
-    }
-    else if(option==3){
-        mvprintw(sizey/2-2, sizex/2-6, " New game  ");
-        mvprintw(sizey/2-1, sizex/2-6, " Records   ");
-        mvprintw(sizey/2, sizex/2-6, " Settings  ");
-        attron(COLOR_PAIR(7));
-        mvprintw(sizey/2+1, sizex/2-6, " Exit game ");
-        attroff(COLOR_PAIR(7));
-    }
-    c=getch();
-    if(c=='w') {option--; if(option<0) option=2;}
-    else if(c=='s'){option++; if(option>3) option=0;}   
+        print_menu(option);
+        c=getch();
+        if(c=='w') {option--; if(option<0) option=2;}
+        else if(c=='s'){option++; if(option>3) option=0;}   
     }
     if (option==0)
     {
