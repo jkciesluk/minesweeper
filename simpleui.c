@@ -24,7 +24,7 @@ void print_ncurses_board(WINDOW *win, tile** board){
             else{
             switch (board[i][j].state)
             {
-            case -1:
+            case BOMB:
                 wattron(win, COLOR_PAIR(2));
                 mvwprintw(win, 1+i, 1+j*2, " B ", board[i][j].state);
                 wattroff(win, COLOR_PAIR(2));

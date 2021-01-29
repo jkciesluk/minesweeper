@@ -4,6 +4,8 @@
 #include <time.h>
 #include <ncurses.h>
 
+#define BOMB -1
+
 bool try;
 int MAX_HEIGHT;
 int MAX_WIDTH;

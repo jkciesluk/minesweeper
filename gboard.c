@@ -6,12 +6,12 @@ int create_bombs(tile** board){            //randomly generates bombs on board
     for(int i=0; i<MAX_BOMBS; i++){
         row=rand()%MAX_HEIGHT;
         column=rand()%MAX_WIDTH;
-        while (board[row][column].state==-1)
+        while (board[row][column].state==BOMB)
         {
             row=rand()%MAX_HEIGHT;
             column=rand()%MAX_WIDTH;
         }
-        board[row][column].state=-1;
+        board[row][column].state=BOMB;
         //printf("%d %d \n", row, column);
     }
     return 1;
@@ -21,16 +21,16 @@ int bombs_around(tile** board){                //give each tile value equal to a
     
     for(int i=0; i<MAX_HEIGHT; i++){
         for(int j=0; j<MAX_WIDTH; j++){
-            if (board[i][j].state==-1)
+            if (board[i][j].state==BOMB)
             {
-                if(j<MAX_WIDTH-1) if(board[i][j+1].state!=-1) board[i][j+1].state++;                //dol
-                if(i<MAX_HEIGHT-1 && j<MAX_WIDTH-1) if(board[i+1][j+1].state!=-1) board[i+1][j+1].state++;                //dol prawo
-                if(i<MAX_HEIGHT-1) if(board[i+1][j].state!=-1) board[i+1][j].state++;                //prawo
-                if(i<MAX_HEIGHT-1 && j>0) if(board[i+1][j-1].state!=-1) board[i+1][j-1].state++;                //gora prawo
-                if(j>0) if(board[i][j-1].state!=-1) board[i][j-1].state++;                //gora
-                if(i>0 && j>0) if(board[i-1][j-1].state!=-1) board[i-1][j-1].state++;                //gora lewo
-                if(i>0) if(board[i-1][j].state!=-1) board[i-1][j].state++;                //lewo
-                if(i>0 && j<MAX_WIDTH-1) if(board[i-1][j+1].state!=-1) board[i-1][j+1].state++;                //dol lewo
+                if(j<MAX_WIDTH-1) if(board[i][j+1].state!=BOMB) board[i][j+1].state++;                //dol
+                if(i<MAX_HEIGHT-1 && j<MAX_WIDTH-1) if(board[i+1][j+1].state!=BOMB) board[i+1][j+1].state++;                //dol prawo
+                if(i<MAX_HEIGHT-1) if(board[i+1][j].state!=BOMB) board[i+1][j].state++;                //prawo
+                if(i<MAX_HEIGHT-1 && j>0) if(board[i+1][j-1].state!=BOMB) board[i+1][j-1].state++;                //gora prawo
+                if(j>0) if(board[i][j-1].state!=BOMB) board[i][j-1].state++;                //gora
+                if(i>0 && j>0) if(board[i-1][j-1].state!=BOMB) board[i-1][j-1].state++;                //gora lewo
+                if(i>0) if(board[i-1][j].state!=BOMB) board[i-1][j].state++;                //lewo
+                if(i>0 && j<MAX_WIDTH-1) if(board[i-1][j+1].state!=BOMB) board[i-1][j+1].state++;                //dol lewo
             }
         }
     }
@@ -56,7 +56,7 @@ int reveal_bombs(tile** board){
     int k=0;
     for(int i=0; i<MAX_HEIGHT; i++){
         for(int j=0; j<MAX_WIDTH; j++){
-            if (board[i][j].state==-1 && board[i][j].flag==false){
+            if (board[i][j].state==BOMB && board[i][j].flag==false){
                 board[i][j].clicked=true;
                 k++;
             }
@@ -87,7 +87,7 @@ int flag(tile** board, int i, int j){                              //flag select
 bool click(tile** board, int i, int j){                //reveal selected tile
         board[i][j].flag=false;
         board[i][j].clicked=true;
-        if(board[i][j].state==-1) {
+        if(board[i][j].state==BOMB) {
             //printf("Bomba\n"); 
             lost=true;
             return true;
@@ -133,7 +133,7 @@ int unrevealed_around(tile** board, int i, int j){             //amount of unrev
            return unr;
 }
 
-void hint_reveal(tile** board, int i, int j){          //reveal() for help function
+void hint_reveal(tile** board, int i, int j){          //reveal() for help function 
                 
                 if(j<MAX_WIDTH-1 && board[i][j+1].clicked==false && board[i][j+1].flag==false) {board[i][j+1].clicked=true;                 left--;             if(board[i][j+1].state==0) reveal(board, i, j+1);}
                 if(i<MAX_HEIGHT-1 && j<MAX_WIDTH-1  && board[i+1][j+1].clicked==false && board[i+1][j+1].flag==false){ board[i+1][j+1].clicked=true;  left--;   if(board[i+1][j+1].state==0) reveal(board, i+1, j+1);}
@@ -146,7 +146,7 @@ void hint_reveal(tile** board, int i, int j){          //reveal() for help funct
 }
 
 
-void hint_flag(tile** board, int i, int j){            //flag() for help function
+void hint_flag(tile** board, int i, int j){            //flag() for help function   
 
         if(j<MAX_WIDTH-1) if(!board[i][j+1].clicked) {board[i][j+1].flag=true; bombs_left--; board[i][j+1].clicked=true;}                 //dol
         if(i<MAX_HEIGHT-1 && j<MAX_WIDTH-1) if(!board[i+1][j+1].clicked) {board[i+1][j+1].flag=true; bombs_left--; board[i+1][j+1].clicked=true;}                //dol prawo
