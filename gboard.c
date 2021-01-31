@@ -193,7 +193,19 @@ bool guess_move(tile** board){
         if(s%2==0){ if(i<MAX_HEIGHT-1) i++; else if(j<MAX_WIDTH-1) j++;}
         else { if(j<MAX_WIDTH-1) j++; else if(i<MAX_HEIGHT-1) i++;}
         s++;
-        if(s>MAX_HEIGHT+MAX_WIDTH) return false;
+        if(s>MAX_HEIGHT+MAX_WIDTH) {
+            for (int  k = 0; k < MAX_HEIGHT; k++)
+            {
+                for (int g = 0; g < MAX_WIDTH; g++)
+                {
+                    if(board[k][g].clicked==false && board[k][g].flag==false){
+                        click(board, k,j); return true;
+                    }
+                }
+                
+            }
+            
+        }
     }
     click(board, i,j);
     return true;
